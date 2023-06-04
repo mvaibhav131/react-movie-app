@@ -1,0 +1,103 @@
+@import "../../mixins.scss";
+.explorePage {
+    min-height: 700px;
+    padding-top: 100px;
+    .resultNotFound {
+        font-size: 24px;
+        color: black;
+    }
+    .pageHeader {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        flex-direction: column;
+        @include md {
+            flex-direction: row;
+        }
+    }
+    .pageTitle {
+        font-size: 24px;
+        line-height: 34px;
+        color: rgb(255, 0, 162);
+        margin-bottom: 20px;
+        @include md {
+            margin-bottom: 0;
+        }
+    }
+    .filters {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        @include md {
+            flex-direction: row;
+        }
+        .react-select-container {
+            &.genresDD {
+                width: 100%;
+                @include md {
+                    max-width: 500px;
+                    min-width: 250px;
+                }
+            }
+            &.sortbyDD {
+                width: 100%;
+                flex-shrink: 0;
+                @include md {
+                    width: 250px;
+                }
+            }
+            .react-select__control {
+                border: 0;
+                outline: 0;
+                box-shadow: none;
+                background-color: rgb(255, 255, 255);
+                border-radius: 20px;
+                .react-select__value-container {
+                    .react-select__placeholder,
+                    .react-select__input-container {
+                        color: rgb(0, 0, 0);
+                        cursor: pointer;
+                        margin: 0 10px;
+                    }
+                }
+                .react-select__single-value {
+                    color: rgb(0, 0, 0);
+                }
+                .react-select__multi-value {
+                    background-color: black;
+                    border-radius: 10px;
+                    .react-select__multi-value__label {
+                        color: rgb(0, 0, 0);
+                    }
+                    .react-select__multi-value__remove {
+                        background-color: transparent;
+                        color: rgb(0, 0, 0);
+                        cursor: pointer;
+                        &:hover {
+                            color: black;
+                        }
+                    }
+                }
+            }
+            .react-select__menu {
+                top: 40px;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+    .content {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 10px;
+        margin-bottom: 50px;
+        @include md {
+            gap: 20px;
+        }
+        .movieCard {
+            .posterBlock {
+                margin-bottom: 30px;
+            }
+        }
+    }
+}

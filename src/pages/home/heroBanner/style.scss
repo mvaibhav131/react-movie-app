@@ -3,6 +3,7 @@
 .heroBanner{
     width: 100%;
     height: 450px;
+    margin-bottom: 18px;
     background-color: var(--black);
     display: flex;
     align-items: center;
@@ -35,8 +36,8 @@
     height: 250px;
     background: linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0) 0%,
-        #421123 78%
+        rgba(112, 66, 192, 0) 0%,
+        #1b1744 78%
     );
     position: absolute;
     bottom: 0;

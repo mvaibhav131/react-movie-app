@@ -3,8 +3,8 @@ import "./style.scss";
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../../../hooks/useFetch';
 import { useSelector } from 'react-redux';
-import Img from '../../../components/lazyLoadImage/img';
 import ContentWrapper from '../../../components/contentWrapper/ContentWrapper';
+import Img from '../../../components/lazyLoadImage/Img';
 
 const HeroBanner = () => {
     const [background,setBackground]=useState("");
@@ -38,7 +38,7 @@ const HeroBanner = () => {
             <span className="subTitle">Your Favourites Movies, TV Shows and Doscover...</span>
             <div className="searchInput">
                 <input type="text" placeholder='Search movie or tv shows...' onChange={(e)=>setQuery(e.target.value)} onKeyUp={searchQueryHandler} />
-                <button>Search</button>
+                <button onClick={()=>navigate(`/search/${query}`)}>Search</button>
             </div>
         </div>
     

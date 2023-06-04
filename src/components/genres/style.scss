@@ -1,0 +1,29 @@
+@import "../../mixins.scss";
+
+.genres{
+    display:flex;
+    gap: 7px;
+    // @include md{
+    // display:flex;
+    // gap: 7px;
+    // }
+    .genre{
+        background-color: rgb(75, 75, 247);
+        padding:3px 5px;
+        font-size: 13px;
+        color:rgb(255, 255, 255);
+        border-radius: 3px;
+        white-space: nowrap;
+        // @include md{
+        // background-color: rgb(75, 75, 247);
+        // padding:3px 5px;
+        // font-size: 1px;
+        // color:rgb(255, 255, 255);
+        // border-radius: 3px;
+        // white-space: nowrap;
+        // }
+    }
+   .genre:hover{
+        background-color: black;
+    }
+}

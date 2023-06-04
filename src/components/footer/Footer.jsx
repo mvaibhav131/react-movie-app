@@ -19,7 +19,7 @@ const Footer = () => {
           <li className="menuItem">Terms Of Use</li>
           <li className="menuItem">Privacy-Policy</li>
           <a style={{ color: "white",textDecoration:"none" }} href="https://vaibhav-more-portfolio-site.netlify.app/"><li  className="menuItem">About</li></a>
-          <li className="menuItem">Blog</li>
+          <a style={{ color: "white", textDecoration: "none" }} href="https://medium.com/@vaibhavmore24051997"><li className="menuItem">Blog</li></a>
           <li className="menuItem">FAQ</li>
         </ul>
         <div className="infoText">

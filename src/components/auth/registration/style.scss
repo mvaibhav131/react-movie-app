@@ -1,0 +1,70 @@
+
+$primary-color: #007bff;
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000000;
+}
+
+.container {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 25px;
+  background-color: #a0f495;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+  text-align: center;
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: $primary-color;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+.toggle-container {
+  margin-top: 20px;
+
+  p {
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  .toggle-link {
+    color: $primary-color;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 300px;
+  }
+}

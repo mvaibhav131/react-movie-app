@@ -11,7 +11,6 @@ const Popular = () => {
 
     const onTabChange = (tab) => {
         setEndpoint(tab === "Movies" ? "movie" : "tv")
-       
     };
     return (
         <div className='carouselSection'>
@@ -19,11 +18,11 @@ const Popular = () => {
                 <span className="carouselTitle">
                     Popular Movie's & Tv Shows
                 </span>
-                <SwitchTab data={["Movies","TV"]} onTabChange={onTabChange} />
+                <SwitchTab data={["Movies", "TV"]} onTabChange={onTabChange} />
             </ContentWrapper>
             <Carousel data={data?.results} loading={loading} endpoint={endpoint} />
         </div>
     )
-}
+};
 
 export default Popular;

@@ -10,7 +10,6 @@ import MovieCard from "../../components/movieCard/MovieCard";
 import { fetchData } from "../../utils/api";
 
 let filters = {};
-
 const sortbyData = [
   { value: "popularity.desc", label: "Popularity Descending" },
   { value: "popularity.asc", label: "Popularity Ascending" },

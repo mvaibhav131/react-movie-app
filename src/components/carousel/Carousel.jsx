@@ -71,19 +71,16 @@ const Carousel = ({ data, loading,endpoint,title }) => {
                       })}
                 </div>
               ): (
-                      <div className="loadingSkeleton">
-                          {skItem()}
-                          {skItem()}
-                          {skItem()}
-                          {skItem()}
-                          {skItem()}
-                      </div>
+                <div className="loadingSkeleton">
+                    {skItem()}
+                    {skItem()}
+                    {skItem()}
+                    {skItem()}
+                    {skItem()}
+                </div>
               )}
-
           </ContentWrapper>
-
     </div>
   )
 }
-
 export default Carousel;

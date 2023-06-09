@@ -9,7 +9,6 @@ const useFetch = (url) => {
         setLoading("loading...");
         setData(null);
         setError(null);
-
         fetchData(url)
             .then((res) => {
                 setLoading(false);
@@ -21,7 +20,6 @@ const useFetch = (url) => {
                 setError("Something went wrong!");
             });
     }, [url]);
-
     return { data, loading, error };
 };
 

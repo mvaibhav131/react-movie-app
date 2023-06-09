@@ -14,7 +14,6 @@ import CircleRating from "../circleRating/CircleRating";
 import Genres from "../genres/Genres";
 
 
-
 const Carousel = ({ data, loading, endpoint, title }) => {
     const carouselContainer = useRef(); // is used for to get reference of any tag
     const navigate = useNavigate();

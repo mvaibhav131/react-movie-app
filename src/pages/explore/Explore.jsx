@@ -89,7 +89,6 @@ const Explore = () => {
         delete filters.with_genres;
       }
     }
-
     setPageNum(1);
     fetchInitialData();
   };

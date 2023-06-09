@@ -6,7 +6,6 @@ import Carousel from '../../../components/carousel/Carousel';
 
 const Popular = () => {
     const [endpoint, setEndpoint] = useState("movie");
-
     const { data, loading } = useFetch(`/${endpoint}/popular`);
 
     const onTabChange = (tab) => {

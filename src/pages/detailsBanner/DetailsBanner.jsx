@@ -149,8 +149,6 @@ const DetailsBanner = ({ video, crew }) => {
                                                 </span>
                                             </div>
                                         )}
-
-
                                     </div>
                                 </div>
                                 <VideoPopup

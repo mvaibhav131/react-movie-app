@@ -6,7 +6,7 @@ import {store} from "./store/store.js";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 <Provider store={store}>
-<App />
+<App/>
 </Provider>
 )
  

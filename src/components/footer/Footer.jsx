@@ -29,7 +29,7 @@ const Footer = () => {
             <a style={{ color: "white" }} href="https://github.com/mvaibhav131"><FaGithub /></a>
           </span>
           <span className="icon">
-            <a style={{ color: "white" }} href="https://vaibhav-more-portfolio-site.netlify.app/"><FaGitlab /></a> 
+            <a style={{ color: "white" }} href="https://gitlab.com/mvaibhav131"><FaGitlab /></a> 
           </span>
           <span className="icon">
             <a style={{ color: "white" }} href="https://www.instagram.com/vaibhavmore1997/"><FaInstagram /></a> 

@@ -8,5 +8,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 <Provider store={store}>
 <App/>
 </Provider>
+//here i remove the react strict mode hence api is not called two times.
 )
  

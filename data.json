@@ -1,0 +1,13 @@
+{
+  "Countries": [
+    {
+      "CountryName": "Indonesia",
+      "States": [
+        {
+          "StateName": ["Bali","Shiroli","Candi","hindia","somnar"],
+          "Cities": ["Denpasar", "Kuta", "Tuban"]
+        }
+      ]
+    }
+  ]
+}

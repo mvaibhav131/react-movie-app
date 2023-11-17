@@ -11,10 +11,10 @@ import { createSlice } from "@reduxjs/toolkit";
         error: ""
     },
     reducers: {
-        
+        //user data
     },
     extraReducers: {
-        
+        // user extraReducer
     },
 });
 

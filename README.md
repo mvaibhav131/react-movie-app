@@ -1,4 +1,4 @@
-### Getting Started with clone the above repository using `git clone {repository url}` ...
+### Getting Started with clone the above repository using `git clone {repository url}` 
 This project was bootstrapped with [Create React-vite App](https://vitejs.dev/guide/).
 
 ### In the project directory, you can run `npm install` to install node_modules.

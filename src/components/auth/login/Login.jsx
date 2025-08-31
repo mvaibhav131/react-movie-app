@@ -1,68 +1,80 @@
-import React, { useState } from 'react';
-import './style.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+import "./style.scss"; // Import styles
 
 const Login = () => {
-    const [login, setLogin] = useState(true);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-    const handleToggle = () => {
-        setLogin(!login);
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(`Email: ${email}, Password: ${password}`);
+    setEmail("");
+    setPassword("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Perform login or registration logic here
-        console.log(`Email: ${email}, Password: ${password}`);
-        // Reset form fields
-        setEmail('');
-        setPassword('');
-    };
+    if (email.length >= 1 && password.length >= 1) {
+      navigate("/");
+    }
+  };
 
-    return (
-        <div className="App">
-            <div className="container">
-                <div className="form-container">
-                    <h1>
-                        {/* {login ? 'Login' : 'Register'} */}
-                        Login
-                    </h1>
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <button type="submit" onClick={() => {email.length>=1&&password.length>=1 ? navigate("/"):""}} >
-                            {/* {login ? 'Login' : 'Register'} */}
-                            Login
-                        </button>
-                    </form>
-                    <div className="toggle-container">
-                        <p>
-                            {/* {login ? "Don't have an account?" : 'Already have an account?'} */}
-                            Don't have an account?
-                            <Link className="toggle-link" onClick={handleToggle} to={"/register"}>
-                                {/* {login ? 'Register here' : 'Login here'} */}
-                                Register here
-                            </Link>
-                        </p>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="login-page">
+      <div className="login-card">
+        {/* Header */}
+        <h1 className="login-title">Welcome Back 👋</h1>
+        <p className="login-subtitle">Login to continue exploring</p>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="login-form">
+          {/* Email */}
+          <div className="input-group">
+            <FaEnvelope className="input-icon" />
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div className="input-group">
+            <FaLock className="input-icon" />
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Button */}
+          <button type="submit" className="login-btn">
+            Sign In
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div className="divider">
+          <hr />
+          <span>OR</span>
+          <hr />
         </div>
-    );
+
+        {/* Footer */}
+        <p className="toggle-text">
+          Don’t have an account?{" "}
+          <Link to="/register" className="toggle-link">
+            Create one
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

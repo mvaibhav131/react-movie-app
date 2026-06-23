@@ -8,6 +8,8 @@ Open [http://localhost:5173/](http://localhost:5173) to view it in your browser.
 
 ## Banner
 ![image0](https://github.com/mvaibhav131/react-movie-app/assets/98808183/26e544ab-4ecc-40b5-b32e-fa640e0866f1)
+<img width="1918" height="983" alt="image" src="https://github.com/user-attachments/assets/b431dbd6-38f9-493e-8b70-d8bfc181ec0b" />
+
 
 ## Upcoming and Trending Movie,Tv show's
 ![image1](https://github.com/mvaibhav131/react-movie-app/assets/98808183/741e40e3-0c5c-41a1-bf2b-85219b5ec4df)

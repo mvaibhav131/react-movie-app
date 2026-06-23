@@ -1,64 +1,94 @@
 import React, { useState } from 'react';
 import './style.scss';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import toast from 'react-hot-toast';
+import { loginSuccess, getUsers } from '../../../store/authSlice';
+import { HiMail, HiLockClosed, HiEye, HiEyeOff } from 'react-icons/hi';
 
 const Login = () => {
-    const [login, setLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPass, setShowPass] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
-    const handleToggle = () => {
-        setLogin(!login);
-    };
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Perform login or registration logic here
-        console.log(`Email: ${email}, Password: ${password}`);
-        // Reset form fields
-        setEmail('');
-        setPassword('');
+        if (!email.trim() || !password.trim()) {
+            toast.error('Please fill in all fields.');
+            return;
+        }
+        setLoading(true);
+
+        setTimeout(() => {
+            const users = getUsers();
+            const found = users.find(
+                (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+            );
+            if (!found) {
+                toast.error('Invalid email or password.');
+                setLoading(false);
+                return;
+            }
+            const { password: _, ...safeUser } = found;
+            dispatch(loginSuccess(safeUser));
+            toast.success(`Welcome back, ${safeUser.name}! 🎬`);
+            navigate('/');
+            setLoading(false);
+        }, 600);
     };
 
     return (
-        <div className="App">
-            <div className="container">
-                <div className="form-container">
-                    <h1>
-                        {/* {login ? 'Login' : 'Register'} */}
-                        Login
-                    </h1>
-                    <form onSubmit={handleSubmit}>
+        <div className="authPage">
+            <div className="authCard">
+                <div className="authHeader">
+                    <div className="authLogo">🎬</div>
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to continue watching</p>
+                </div>
+
+                <form onSubmit={handleSubmit} noValidate>
+                    <div className="inputGroup">
+                        <HiMail className="inputIcon" />
                         <input
                             type="email"
-                            placeholder="Email"
+                            placeholder="Email address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            required
+                            autoComplete="email"
                         />
+                    </div>
+
+                    <div className="inputGroup">
+                        <HiLockClosed className="inputIcon" />
                         <input
-                            type="password"
+                            type={showPass ? 'text' : 'password'}
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
+                            autoComplete="current-password"
                         />
-                        <button type="submit" onClick={() => {email.length>=1&&password.length>=1 ? navigate("/"):""}} >
-                            {/* {login ? 'Login' : 'Register'} */}
-                            Login
+                        <button
+                            type="button"
+                            className="eyeBtn"
+                            onClick={() => setShowPass((p) => !p)}
+                        >
+                            {showPass ? <HiEyeOff /> : <HiEye />}
                         </button>
-                    </form>
-                    <div className="toggle-container">
-                        <p>
-                            {/* {login ? "Don't have an account?" : 'Already have an account?'} */}
-                            Don't have an account?
-                            <Link className="toggle-link" onClick={handleToggle} to={"/register"}>
-                                {/* {login ? 'Register here' : 'Login here'} */}
-                                Register here
-                            </Link>
-                        </p>
                     </div>
+
+                    <button type="submit" className="submitBtn" disabled={loading}>
+                        {loading ? <span className="btnSpinner" /> : 'Sign In'}
+                    </button>
+                </form>
+
+                <div className="authFooter">
+                    <p>
+                        Don't have an account?{' '}
+                        <Link to="/register">Create one</Link>
+                    </p>
                 </div>
             </div>
         </div>

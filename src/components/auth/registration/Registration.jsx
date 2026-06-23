@@ -1,73 +1,118 @@
 import React, { useState } from 'react';
-import './style.scss';
+import '../login/style.scss';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { getUsers, saveUsers } from '../../../store/authSlice';
+import { HiUser, HiMail, HiLockClosed, HiEye, HiEyeOff } from 'react-icons/hi';
 
 const Register = () => {
-    const [login, setLogin] = useState(true);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPass, setShowPass] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
-
-    const handleToggle = () => {
-        setLogin(!login);
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Perform login or registration logic here
-        console.log(`Email: ${email}, Password: ${password}`);
-        // Reset form fields
-        setEmail('');
-        setPassword('');
+        if (!name.trim() || !email.trim() || !password.trim()) {
+            toast.error('Please fill in all fields.');
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            toast.error('Enter a valid email address.');
+            return;
+        }
+        if (password.length < 6) {
+            toast.error('Password must be at least 6 characters.');
+            return;
+        }
+        setLoading(true);
+
+        setTimeout(() => {
+            const users = getUsers();
+            const exists = users.some(
+                (u) => u.email.toLowerCase() === email.toLowerCase()
+            );
+            if (exists) {
+                toast.error('An account with this email already exists.');
+                setLoading(false);
+                return;
+            }
+            const newUser = {
+                id: Date.now().toString(),
+                name: name.trim(),
+                email: email.toLowerCase().trim(),
+                password,
+                createdAt: new Date().toISOString(),
+            };
+            saveUsers([...users, newUser]);
+            toast.success('Account created! Please sign in. 🎉');
+            navigate('/login');
+            setLoading(false);
+        }, 600);
     };
 
     return (
-        <div className="App">
-            <div className="container">
-                <div className="form-container">
-                    <h1>
-                        {/* {login ? 'Login' : 'Register'} */}
-                        Register
-                    </h1>
-                    <form onSubmit={handleSubmit}>
+        <div className="authPage">
+            <div className="authCard">
+                <div className="authHeader">
+                    <div className="authLogo">🎬</div>
+                    <h1>Create Account</h1>
+                    <p>Join and start watching today</p>
+                </div>
+
+                <form onSubmit={handleSubmit} noValidate>
+                    <div className="inputGroup">
+                        <HiUser className="inputIcon" />
                         <input
                             type="text"
-                            placeholder="Name"
+                            placeholder="Full name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            required
+                            autoComplete="name"
                         />
+                    </div>
+
+                    <div className="inputGroup">
+                        <HiMail className="inputIcon" />
                         <input
                             type="email"
-                            placeholder="Email"
+                            placeholder="Email address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            required
+                            autoComplete="email"
                         />
+                    </div>
+
+                    <div className="inputGroup">
+                        <HiLockClosed className="inputIcon" />
                         <input
-                            type="password"
-                            placeholder="Password"
+                            type={showPass ? 'text' : 'password'}
+                            placeholder="Password (min. 6 characters)"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
+                            autoComplete="new-password"
                         />
-                        <button type="submit" onClick={() => { name.length>=1 && email.length >=1 && password.length >=1 ? navigate("/login") : "" }}>
-                            {/* {login ? 'Login' : 'Register'} */}
-                            Register
+                        <button
+                            type="button"
+                            className="eyeBtn"
+                            onClick={() => setShowPass((p) => !p)}
+                        >
+                            {showPass ? <HiEyeOff /> : <HiEye />}
                         </button>
-                    </form>
-                    <div className="toggle-container">
-                        <p>
-                            {/* {login ? "Don't have an account?" : 'Already have an account?'} */}
-                            Already have an account?
-                            <Link className="toggle-link" onClick={handleToggle} to={"/login"}>
-                                {/* {login ? 'Register here' : 'Login here'} */}
-                                Login here
-                            </Link>
-                        </p>
                     </div>
+
+                    <button type="submit" className="submitBtn" disabled={loading}>
+                        {loading ? <span className="btnSpinner" /> : 'Create Account'}
+                    </button>
+                </form>
+
+                <div className="authFooter">
+                    <p>
+                        Already have an account?{' '}
+                        <Link to="/login">Sign in</Link>
+                    </p>
                 </div>
             </div>
         </div>

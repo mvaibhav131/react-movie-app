@@ -1,29 +1,27 @@
 @import "../../mixins.scss";
 
-.genres{
-    display:flex;
-    gap: 7px;
-    // @include md{
-    // display:flex;
-    // gap: 7px;
-    // }
-    .genre{
-        background-color: rgb(75, 75, 247);
-        padding:3px 5px;
-        font-size: 13px;
-        color:rgb(255, 255, 255);
-        border-radius: 3px;
+.genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    .genre {
+        background: rgba(108, 99, 255, 0.18);
+        border: 1px solid rgba(108, 99, 255, 0.4);
+        padding: 3px 9px;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--accent-hover);
+        border-radius: 20px;
         white-space: nowrap;
-        // @include md{
-        // background-color: rgb(75, 75, 247);
-        // padding:3px 5px;
-        // font-size: 1px;
-        // color:rgb(255, 255, 255);
-        // border-radius: 3px;
-        // white-space: nowrap;
-        // }
-    }
-   .genre:hover{
-        background-color: black;
+        transition: all 0.2s;
+
+        @include md { font-size: 12px; }
+
+        &:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
     }
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactPlayer from "react-player/youtube";
+import { IoClose } from "react-icons/io5";
 import "./style.scss";
 
 const VideoPopup = ({ show, setShow, videoId, setVideoId }) => {
@@ -9,17 +10,17 @@ const VideoPopup = ({ show, setShow, videoId, setVideoId }) => {
     };
     return (
         <div className={`videoPopup ${show ? "visible" : ""}`}>
-            <div className="opacityLayer" onClick={hidePopup}></div>
+            <div className="opacityLayer" onClick={hidePopup} />
             <div className="videoPlayer">
-                <span className="closeBtn" onClick={hidePopup}>
-                    Close
-                </span>
+                <button className="closeBtn" onClick={hidePopup}>
+                    <IoClose />
+                </button>
                 <ReactPlayer
                     url={`https://www.youtube.com/watch?v=${videoId}`}
                     controls
                     width="100%"
                     height="100%"
-                // playing={true}
+                    playing={show}
                 />
             </div>
         </div>

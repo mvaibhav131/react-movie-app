@@ -1,44 +1,29 @@
 .loadingSpinner {
     width: 100%;
     height: 150px;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.initial { height: 70vh; }
+
     .spinner {
-        animation: rotate 2s linear infinite;
-        z-index: 2;
-        width: 50px;
-        height: 50px;
-        & .path {
-            // stroke: hsl(210, 70, 75);
+        animation: rotate 1.8s linear infinite;
+        width: 48px;
+        height: 48px;
+
+        .path {
+            stroke: var(--accent);
             stroke-linecap: round;
-            animation: dash 1.5s ease-in-out infinite;
+            animation: dash 1.4s ease-in-out infinite;
         }
     }
 
-    &.initial {
-        height: 700px;
-    }
-
-    @keyframes rotate {
-        100% {
-            transform: rotate(360deg);
-        }
-    }
+    @keyframes rotate { 100% { transform: rotate(360deg); } }
 
     @keyframes dash {
-        0% {
-            stroke-dasharray: 1, 150;
-            stroke-dashoffset: 0;
-        }
-        50% {
-            stroke-dasharray: 90, 150;
-            stroke-dashoffset: -35;
-        }
-        100% {
-            stroke-dasharray: 90, 150;
-            stroke-dashoffset: -124;
-        }
+        0%   { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+        50%  { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+        100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
     }
 }

@@ -1,17 +1,149 @@
 @import "../../../mixins.scss";
 
-.heroBanner{
+.heroBanner {
     width: 100%;
-    height: 450px;
-    margin-bottom: 18px;
-    background-color: var(--black);
+    height: 520px;
+    margin-bottom: 30px;
+    background-color: var(--bg-secondary);
     display: flex;
     align-items: center;
     position: relative;
-    @include md{
-        height: 700px;
+    overflow: hidden;
+
+    @include md { height: 680px; }
+    @include lg { height: 760px; }
+
+    .heroBannerSkeleton {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .backdrop-img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+
+        .lazy-load-image-background {
+            width: 100%;
+            height: 100%;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center top;
+                filter: brightness(0.72);
+            }
+        }
+    }
+
+    .opacity-layer {
+        width: 100%;
+        height: 50%;
+        background: var(--hero-gradient);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
     }
 }
+
+.heroBannerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+    padding-top: 30px;
+
+    @include md { padding-top: 0; }
+
+    .title {
+        font-size: 36px;
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 14px;
+        letter-spacing: -0.5px;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+
+        @include md { font-size: 56px; }
+        @include lg { font-size: 66px; }
+    }
+
+    .subTitle {
+        font-size: 15px;
+        font-weight: 400;
+        margin-bottom: 36px;
+        opacity: 0.85;
+        max-width: 480px;
+        line-height: 1.6;
+
+        @include md { font-size: 18px; }
+    }
+
+    .searchInput {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        max-width: 560px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 50px;
+        overflow: hidden;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+
+        .searchIcon {
+            font-size: 20px;
+            color: #6C63FF;
+            margin-left: 18px;
+            flex-shrink: 0;
+        }
+
+        input {
+            flex: 1;
+            height: 54px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            color: #1A1A2E;
+            padding: 0 14px;
+
+            &::placeholder { color: #8A8AAA; }
+
+            @include md { font-size: 17px; height: 60px; }
+        }
+
+        button {
+            height: 54px;
+            padding: 0 24px;
+            background: var(--gradient);
+            color: #fff;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            border-radius: 0 50px 50px 0;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+
+            &:hover { opacity: 0.88; }
+
+            @include md { height: 60px; padding: 0 32px; font-size: 16px; }
+        }
+    }
+}
+
 .backdrop-img{
     width: 100%;
     height: 100%;

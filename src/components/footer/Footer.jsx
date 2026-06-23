@@ -22,7 +22,7 @@ const Footer = () => {
           <li className="menuItem">FAQ</li>
         </ul>
         <div className="infoText">
-          Made By Vaibhav More (Full stack Developer).
+          Made by Vaibhav More (Full Stack Developer) · VaibhavFlix
         </div>
         <div className="socialIcons">
           <span className="icon">

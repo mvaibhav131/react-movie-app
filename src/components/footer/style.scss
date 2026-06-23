@@ -1,67 +1,85 @@
 @import "../../mixins.scss";
+
 .footer {
-    background-color: rgb(36, 33, 33);
-    padding: 30px 0;
-    color: white;
+    background: var(--footer-bg);
+    padding: 40px 0 28px;
+    color: #fff;
     position: relative;
+
+    &::before {
+        content: '';
+        display: block;
+        height: 2px;
+        background: var(--gradient);
+        margin-bottom: 40px;
+    }
+
     .contentWrapper {
         display: flex;
         align-items: center;
         flex-direction: column;
+        gap: 0;
     }
+
     .menuItems {
-        list-style-type: none;
+        list-style: none;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 15px;
-        margin-bottom: 20px;
-        @include md {
-            margin-bottom: 30px;
-            gap: 30px;
-        }
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        margin-bottom: 28px;
+
+        @include md { gap: 8px 32px; margin-bottom: 36px; }
+
         .menuItem {
-            transition: all ease 0.3s;
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
             cursor: pointer;
-            font-size: 12px;
-            @include md {
-                font-size: 16px;
-            }
-            &:hover {
-                color: rgb(3, 255, 15);
-            }
+            transition: color 0.2s;
+            font-weight: 500;
+
+            @include md { font-size: 14px; }
+            &:hover { color: var(--accent-hover); }
         }
     }
+
     .infoText {
         font-size: 12px;
-        line-height: 20px;
-        opacity: 0.5;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.4);
         text-align: center;
-        max-width: 800px;
-        margin-bottom: 20px;
-        @include md {
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
+        max-width: 480px;
+        margin-bottom: 28px;
+
+        @include md { font-size: 13px; }
     }
+
     .socialIcons {
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 10px;
+        gap: 12px;
+
         .icon {
-            width: 50px;
-            height: 50px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            background-color: var(--black);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all ease 0.3s;
+            transition: all 0.25s;
+            font-size: 16px;
+
+            a { color: rgba(255,255,255,0.7); display: flex; align-items: center; }
+
             &:hover {
-                box-shadow: 0 0 0.625em var(--pink);
-                color: var(--pink);
+                background: var(--gradient);
+                border-color: transparent;
+                transform: translateY(-2px);
+                a { color: #fff; }
             }
         }
     }

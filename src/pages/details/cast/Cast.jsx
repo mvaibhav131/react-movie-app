@@ -2,22 +2,22 @@ import React from "react";
 import { useSelector } from "react-redux";
 import "./style.scss";
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
-import avatar from "../../../assets/login-avatar.png";
 import Img from "../../../components/lazyLoadImage/Img";
+
+// Fallback avatar URL (no local file needed)
+const avatarFallback = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
 
 const Cast = ({ data, loading }) => {
     const { url } = useSelector((state) => state.home);
 
-    const skeleton = () => {
-        return (
-            <div className="skItem">
-                <div className="circle skeleton"></div>
-                <div className="row skeleton"></div>
-                <div className="row2 skeleton"></div>
-            </div>
-        );
-    };
-    
+    const skeleton = () => (
+        <div className="skItem">
+            <div className="circle skeleton" />
+            <div className="row skeleton" />
+            <div className="row2 skeleton" />
+        </div>
+    );
+
     return (
         <div className="castSection">
             <ContentWrapper>
@@ -25,7 +25,9 @@ const Cast = ({ data, loading }) => {
                 {!loading ? (
                     <div className="listItems">
                         {data?.map((item) => {
-                            let imgUrl = item.profile_path ?url.profile + item.profile_path : avatar;
+                            const imgUrl = item.profile_path
+                                ? url.profile + item.profile_path
+                                : avatarFallback;
                             return (
                                 <div key={item.id} className="listItem">
                                     <div className="profileImg">
@@ -33,18 +35,13 @@ const Cast = ({ data, loading }) => {
                                     </div>
                                     <div className="name">{item.name}</div>
                                     <div className="character">{item.character}</div>
-                              </div> 
-                           )
-                       })}
+                                </div>
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className="castSkeleton">
-                        {skeleton()}
-                        {skeleton()}
-                        {skeleton()}
-                        {skeleton()}
-                        {skeleton()}
-                        {skeleton()}
+                        {skeleton()}{skeleton()}{skeleton()}{skeleton()}{skeleton()}{skeleton()}
                     </div>
                 )}
             </ContentWrapper>

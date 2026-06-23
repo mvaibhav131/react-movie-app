@@ -1,168 +1,217 @@
-@import "../../mixins.scss";
+﻿@import "../../mixins.scss";
+
 .carousel {
-    margin-bottom: 50px;
-    .contentWrapper {
-        position: relative;
-    }
+    margin-bottom: 60px;
+
+    .contentWrapper { position: relative; }
+
     .carouselTitle {
-        font-size: 11px ;
-        color: white;
-        margin-bottom: 20px;
-        font-weight: normal;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 22px;
+
+        @include md { font-size: 26px; }
     }
+
     .arrow {
-        font-size: 30px;
-        color: rgb(0, 255, 72);
+        font-size: 32px;
+        color: var(--accent);
         position: absolute;
-        top: 44%;
+        top: calc(50% + 22px);
         transform: translateY(-50%);
         cursor: pointer;
-        opacity: 0.8;
-        z-index: 1;
+        opacity: 0.85;
+        z-index: 5;
         display: none;
-        @include md {
-            display: block;
-        }
-        &:hover {
-            opacity: 1;
-        }
+        transition: opacity 0.2s, transform 0.2s;
+        background: var(--bg-card);
+        border-radius: 50%;
+
+        @include md { display: block; }
+
+        &:hover { opacity: 1; transform: translateY(-50%) scale(1.1); }
     }
-    .carouselLeftNav {
-        left: 30px;
-    }
-    .carouselRightNav {
-        right: 30px;
-    }
+
+    .carouselLeftNav  { left: 4px; }
+    .carouselRightNav { right: 4px; }
+
+    /* â”€â”€ Skeleton â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .loadingSkeleton {
         display: flex;
-        gap: 10px;
-        overflow-y: hidden;
-        margin-right: -20px;
-        margin-left: -20px;
-        padding: 0 20px;
-        @include md {
-            gap: 20px;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-        }
+        gap: 12px;
+        overflow: hidden;
+
+        @include md { gap: 20px; }
+
         .skeletonItem {
-            width: 125px;
-            @include md {
-                width: calc(25% - 15px);
-            }
-            @include lg {
-                width: calc(20% - 16px);
-            }
             flex-shrink: 0;
+            width: 130px;
+
+            @include md { width: calc(25% - 15px); }
+            @include lg { width: calc(20% - 16px); }
+
             .posterBlock {
-                border-radius: 12px;
                 width: 100%;
-                aspect-ratio: 1 / 1.5;
-                margin-bottom: 30px;
+                aspect-ratio: 2 / 3;
+                border-radius: 12px;
+                margin-bottom: 10px;
             }
             .textBlock {
                 display: flex;
                 flex-direction: column;
+                gap: 8px;
+
                 .title {
-                    width: 100%;
-                    height: 20px;
-                    margin-bottom: 10px;
+                    height: 14px;
+                    width: 90%;
+                    border-radius: 4px;
                 }
                 .date {
-                    width: 75%;
-                    height: 20px;
+                    height: 12px;
+                    width: 60%;
+                    border-radius: 4px;
                 }
             }
         }
     }
+
+    /* â”€â”€ Items â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .carouselItems {
         display: flex;
-        gap: 10px;
-        overflow-y: hidden;
-        margin-right: -20px;
-        margin-left: -20px;
-        padding: 0 20px;
+        gap: 12px;
+        overflow-x: auto;
+        overflow-y: visible;
+        padding-bottom: 8px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        &::-webkit-scrollbar { display: none; }
+
         @include md {
             gap: 20px;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
+            overflow-x: auto;
         }
+
         .carouselItem {
-            width: 125px;
-            cursor: pointer;
-            @include md {
-                width: calc(25% - 15px);
-            }
-            @include lg {
-                width: calc(20% - 16px);
-            }
             flex-shrink: 0;
+            width: 130px;
+            cursor: pointer;
+            scroll-snap-align: start;
+            transition: transform 0.3s ease;
+
+            @include md { width: calc(25% - 15px); }
+            @include lg { width: calc(20% - 16px); }
+
+            &:hover {
+                transform: translateY(-4px);
+                .posterBlock .hoverOverlay { opacity: 1; }
+                .posterBlock .lazy-load-image-background img { transform: scale(1.06); }
+            }
+
             .posterBlock {
                 position: relative;
                 width: 100%;
-                aspect-ratio: 1 / 1.5;
-                background-size: cover;
-                background-position: center;
-                margin-bottom: 30px;
-                display: flex;
-                align-items: flex-end;
-                justify-content: space-between;
-                padding: 10px;
+                aspect-ratio: 2 / 3;
+                border-radius: 12px;
+                overflow: hidden;
+                margin-bottom: 12px;
+                background: var(--skeleton-base);
+                box-shadow: var(--shadow-card);
+
                 .lazy-load-image-background {
                     position: absolute;
-                    top: 0;
-                    left: 0;
+                    inset: 0;
                     width: 100%;
                     height: 100%;
-                    border-radius: 12px;
-                    overflow: hidden;
+
                     img {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
-                        object-position: center;
+                        transition: transform 0.35s ease;
                     }
                 }
-                .circleRating {
-                    width: 40px;
-                    height: 40px;
-                    position: relative;
-                    top: 30px;
-                    background-color: white;
-                    flex-shrink: 0;
-                    @include md {
-                        width: 50px;
-                        height: 50px;
-                    }
+
+                /* bottom gradient */
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0; left: 0; right: 0;
+                    height: 50%;
+                    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+                    pointer-events: none;
                 }
-                .genres {
-                    display: none;
-                    position: relative;
-                    @include md {
+
+                .hoverOverlay {
+                    position: absolute;
+                    inset: 0;
+                    background: rgba(108,99,255,0.25);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transition: opacity 0.28s ease;
+                    z-index: 2;
+
+                    .playCircle {
+                        width: 42px;
+                        height: 42px;
+                        border-radius: 50%;
+                        background: var(--gradient);
                         display: flex;
-                        flex-flow: wrap;
-                        justify-content: flex-end;
+                        align-items: center;
+                        justify-content: center;
+
+                        svg { font-size: 18px; color: #fff; margin-left: 2px; }
                     }
+                }
+
+                .circleRating {
+                    position: absolute;
+                    bottom: -13px;
+                    left: 8px;
+                    width: 36px;
+                    height: 36px;
+                    z-index: 3;
+                    background: var(--bg-card);
+                    border-radius: 50%;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+
+                    @include md { width: 44px; height: 44px; bottom: -15px; }
+                }
+
+                .genres {
+                    position: absolute;
+                    bottom: 5px;
+                    right: 6px;
+                    z-index: 3;
+                    display: none;
+                    flex-flow: row wrap;
+                    justify-content: flex-end;
+                    gap: 4px;
+                    @include md { display: flex; }
                 }
             }
+
             .textBlock {
-                color: white;
+                padding-top: 16px;
                 display: flex;
                 flex-direction: column;
+                gap: 4px;
+
                 .title {
-                    font-size: 16px;
-                    margin-bottom: 10px;
-                    line-height: 24px;
-                    @include ellipsis(1);
-                    @include md {
-                        font-size: 20px;
-                    }
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    @include ellipsis(2);
+                    line-height: 1.4;
+                    @include md { font-size: 14px; }
                 }
+
                 .date {
-                    font-size: 14px;
-                    opacity: 0.5;
+                    font-size: 11px;
+                    color: var(--text-muted);
                 }
             }
         }

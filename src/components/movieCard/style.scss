@@ -1,85 +1,138 @@
-@import "../../mixins.scss";
+﻿@import "../../mixins.scss";
+
 .movieCard {
-    width: calc(50% - 5px);
-    margin-bottom: 25px;
+    width: calc(50% - 6px);
+    margin-bottom: 28px;
     cursor: pointer;
     flex-shrink: 0;
-    @include md {
-        width: calc(25% - 15px);
+    transition: transform 0.3s ease;
+
+    @include sm  { width: calc(33.33% - 8px); }
+    @include md  { width: calc(25% - 15px); }
+    @include lg  { width: calc(20% - 16px); }
+
+    &:hover {
+        transform: translateY(-4px);
+        .posterBlock .hoverOverlay { opacity: 1; }
+        .posterBlock .lazy-load-image-background img { transform: scale(1.05); }
     }
-    @include lg {
-        width: calc(20% - 16px);
-    }
+
     .posterBlock {
         position: relative;
         width: 100%;
-        aspect-ratio: 1 / 1.5;
-        background-size: cover;
-        background-position: center;
-        margin-bottom: 30px;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        padding: 10px;
-        transition: all ease 0.5s;
+        aspect-ratio: 2 / 3;
+        border-radius: 14px;
+        overflow: hidden;
+        margin-bottom: 12px;
+        background: var(--skeleton-base);
+        box-shadow: var(--shadow-card);
+
         .lazy-load-image-background {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
-            border-radius: 12px;
-            overflow: hidden;
+
             img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 object-position: center;
+                transition: transform 0.4s ease;
             }
         }
+
+        /* Gradient overlay always present (subtle) */
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 55%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.75));
+            pointer-events: none;
+        }
+
+        .hoverOverlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(108, 99, 255, 0.28);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+
+            .playCircle {
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+                background: var(--gradient);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 24px rgba(108,99,255,0.6);
+
+                svg {
+                    font-size: 22px;
+                    color: #fff;
+                    margin-left: 3px;
+                }
+            }
+        }
+
         .circleRating {
-            width: 40px;
-            height: 40px;
-            position: relative;
-            top: 30px;
-            background-color: white;
-            flex-shrink: 0;
+            position: absolute;
+            bottom: -14px;
+            left: 10px;
+            width: 42px;
+            height: 42px;
+            z-index: 3;
+            background: var(--bg-card);
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+
             @include md {
                 width: 50px;
                 height: 50px;
+                bottom: -16px;
             }
         }
+
         .genres {
+            position: absolute;
+            bottom: 6px;
+            right: 8px;
+            z-index: 3;
             display: none;
-            position: relative;
-            @include md {
-                display: flex;
-                flex-flow: wrap;
-                justify-content: flex-end;
-            }
+            flex-flow: wrap;
+            justify-content: flex-end;
+            @include md { display: flex; }
         }
     }
+
     .textBlock {
-        color: white;
+        padding-top: 18px;
         display: flex;
         flex-direction: column;
+        gap: 4px;
+
         .title {
-            font-size: 16px;
-            margin-bottom: 10px;
-            line-height: 24px;
-            @include ellipsis(1);
-            @include md {
-                font-size: 20px;
-            }
-        }
-        .date {
             font-size: 14px;
-            opacity: 0.5;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+            @include ellipsis(2);
+
+            @include md { font-size: 15px; }
         }
-    }
-    &:hover {
-        .posterBlock {
-            opacity: 0.5;
+
+        .date {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
         }
     }
 }

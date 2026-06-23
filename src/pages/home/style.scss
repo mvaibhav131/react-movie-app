@@ -1,16 +1,23 @@
+.homePage {
+    padding-top: 64px;
+}
+
 .carouselSection {
     position: relative;
-    margin-bottom: 70px;
-    & > .contentWrapper{
+    margin-bottom: 24px;
+
+    & > .contentWrapper {
         display: flex;
         align-items: center;
-        justify-content:space-between;
+        justify-content: space-between;
         margin-bottom: 20px;
     }
-    .carouselTitle{
-        // margin-top: 21px;
-        font-size:16px;
-        color:rgb(2, 255, 40);
-        font-weight:normal;
+
+    .carouselTitle {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text-primary);
+
+        @media (min-width: 768px) { font-size: 24px; }
     }
 }

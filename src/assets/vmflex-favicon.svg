@@ -1,0 +1,26 @@
+﻿<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="vmflexBadge" x1="6" y1="8" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF2E63"/>
+      <stop offset="0.52" stop-color="#FF8A00"/>
+      <stop offset="1" stop-color="#FDE047"/>
+    </linearGradient>
+    <filter id="vmflexGlow" x="-8" y="-6" width="80" height="78" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="3"/>
+      <feGaussianBlur stdDeviation="4"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.28 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+  <g filter="url(#vmflexGlow)">
+    <rect x="6" y="8" width="52" height="48" rx="14" fill="#0B0F19"/>
+    <rect x="7.5" y="9.5" width="49" height="45" rx="12.5" stroke="url(#vmflexBadge)" stroke-width="3"/>
+    <path d="M18 20L29 44L40 20" stroke="url(#vmflexBadge)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40 20V44L50 28" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 20V44" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round"/>
+  </g>
+</svg>

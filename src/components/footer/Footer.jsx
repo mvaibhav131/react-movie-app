@@ -17,28 +17,57 @@ const Footer = () => {
         <ul className="menuItems">
           <li className="menuItem">Terms Of Use</li>
           <li className="menuItem">Privacy-Policy</li>
-          <a style={{ color: "white",textDecoration:"none" }} href="https://vaibhav-more-portfolio-site.netlify.app/"><li  className="menuItem">About</li></a>
-          <a style={{ color: "white", textDecoration: "none" }} href="https://medium.com/@vaibhavmore24051997"><li className="menuItem">Blog</li></a>
+          <a
+            style={{ color: "white", textDecoration: "none" }}
+            href="https://vaibhav-more-portfolio-site.netlify.app/"
+          >
+            <li className="menuItem">About</li>
+          </a>
+          <a
+            style={{ color: "white", textDecoration: "none" }}
+            href="https://medium.com/@vaibhavmore24051997"
+          >
+            <li className="menuItem">Blog</li>
+          </a>
           <li className="menuItem">FAQ</li>
         </ul>
         <div className="infoText">
-          Made by Vaibhav More (Full Stack Developer) · VaibhavFlix
+          Made by Vaibhav More (Full Stack Developer) · VMFlex
         </div>
         <div className="socialIcons">
           <span className="icon">
-            <a style={{ color: "white" }} href="https://github.com/mvaibhav131"><FaGithub /></a>
+            <a style={{ color: "white" }} href="https://github.com/mvaibhav131">
+              <FaGithub />
+            </a>
           </span>
           <span className="icon">
-            <a style={{ color: "white" }} href="https://gitlab.com/mvaibhav131"><FaGitlab /></a> 
+            <a style={{ color: "white" }} href="https://gitlab.com/mvaibhav131">
+              <FaGitlab />
+            </a>
           </span>
           <span className="icon">
-            <a style={{ color: "white" }} href="https://www.instagram.com/vaibhavmore1997/"><FaInstagram /></a> 
+            <a
+              style={{ color: "white" }}
+              href="https://www.instagram.com/vaibhavmore1997/"
+            >
+              <FaInstagram />
+            </a>
           </span>
           <span className="icon">
-            <a style={{ color: "white" }} href="https://twitter.com/mvaibhav131"><FaTwitter /></a> 
+            <a
+              style={{ color: "white" }}
+              href="https://twitter.com/mvaibhav131"
+            >
+              <FaTwitter />
+            </a>
           </span>
           <span className="icon">
-            <a style={{ color: "white" }} href="https://www.linkedin.com/in/vaibhav131/"><FaLinkedin /></a> 
+            <a
+              style={{ color: "white" }}
+              href="https://www.linkedin.com/in/vaibhav131/"
+            >
+              <FaLinkedin />
+            </a>
           </span>
         </div>
       </ContentWrapper>

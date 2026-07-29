@@ -1,0 +1,38 @@
+<svg width="252" height="64" viewBox="0 0 252 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="vmflixBadge" x1="6" y1="8" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF2E63"/>
+      <stop offset="0.52" stop-color="#FF8A00"/>
+      <stop offset="1" stop-color="#FDE047"/>
+    </linearGradient>
+    <linearGradient id="vmflixText" x1="73" y1="16" x2="242" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.48" stop-color="#FFE7B8"/>
+      <stop offset="1" stop-color="#FF4D6D"/>
+    </linearGradient>
+    <filter id="vmflixGlow" x="-12" y="-10" width="276" height="88" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="3"/>
+      <feGaussianBlur stdDeviation="4"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.28 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+  <g filter="url(#vmflixGlow)">
+    <rect x="6" y="8" width="52" height="48" rx="14" fill="#0B0F19"/>
+    <rect x="7.5" y="9.5" width="49" height="45" rx="12.5" stroke="url(#vmflixBadge)" stroke-width="3"/>
+    <path d="M18 20L29 44L40 20" stroke="url(#vmflixBadge)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40 20V44L50 28" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 20V44" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M75 19L87 45L99 19H107L91 53H83L67 19H75Z" fill="url(#vmflixText)"/>
+    <path d="M110 19H119L130 38L141 19H150V53H142V32L132 49H128L118 32V53H110V19Z" fill="url(#vmflixText)"/>
+    <path d="M157 19H181V26H165V33H179V40H165V53H157V19Z" fill="url(#vmflixText)"/>
+    <path d="M185 17H193V53H185V17Z" fill="url(#vmflixText)"/>
+    <circle cx="206" cy="21" r="4.2" fill="url(#vmflixText)"/>
+    <path d="M202 29H210V53H202V29Z" fill="url(#vmflixText)"/>
+    <path d="M219 29H228L233 37L238 29H247L237.5 41L248 53H239L233 45L227 53H218L228.5 41L219 29Z" fill="url(#vmflixText)"/>
+  </g>
+</svg>

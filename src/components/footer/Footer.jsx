@@ -32,7 +32,7 @@ const Footer = () => {
           <li className="menuItem">FAQ</li>
         </ul>
         <div className="infoText">
-          Made by Vaibhav More (Full Stack Developer) · VMFlex
+          Made by Vaibhav More (Full Stack Developer) · VMFlix
         </div>
         <div className="socialIcons">
           <span className="icon">

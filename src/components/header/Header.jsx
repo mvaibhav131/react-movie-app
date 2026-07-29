@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import "./style.scss";
 import ContentWrapper from "../contentWrapper/ContentWrapper";
-import logo from "../../assets/vmflex-wordmark.svg";
+import logo from "../../assets/vmflix-wordmark.svg";
 import { useTheme } from "../../context/ThemeContext";
 import { logoutUser } from "../../store/authSlice";
 import LiveModal from "../liveModal/LiveModal";
@@ -84,7 +84,7 @@ const Header = () => {
       <header className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}>
         <ContentWrapper>
           <div className="logo" onClick={() => navigate("/")}>
-            <img src={logo} alt="VMFlex logo" />
+            <img src={logo} alt="VMFlix logo" />
           </div>
 
           <ul className="menuItems">

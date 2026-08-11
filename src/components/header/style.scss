@@ -39,17 +39,26 @@
   .logo {
     display: flex;
     align-items: center;
+    gap: 8px;
     cursor: pointer;
     flex-shrink: 0;
 
     img {
-      width: 142px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       object-fit: contain;
-
+      border-radius: 8px;
+    }
+    .logoText {
+      font-size: 18px;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: none;
       @include sm {
-        width: 160px;
-        height: 42px;
+        display: block;
       }
     }
   }

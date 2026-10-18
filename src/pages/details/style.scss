@@ -1,0 +1,531 @@
+@use '../../mixins' as *;
+
+.detailsPage {
+  padding-bottom: var(--sp-5);
+}
+
+.sectionTitle {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  margin-bottom: var(--sp-3);
+}
+
+/* ── Hero ─────────────────────────────────────────── */
+.dHero {
+  --fg: var(--text-primary);
+  --fg-muted: var(--text-secondary);
+  position: relative;
+  isolation: isolate;
+  color: var(--fg);
+
+  @include md {
+    --fg: var(--on-media);
+    --fg-muted: var(--on-media-muted);
+    display: flex;
+    align-items: flex-end;
+    min-height: min(720px, 88vh);
+  }
+
+  &__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--bg-secondary);
+
+    .img {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      aspect-ratio: auto !important;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(5, 8, 15, 0.55) 0%, transparent 38%, var(--bg-primary) 100%);
+    }
+
+    @include md {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      aspect-ratio: auto;
+
+      &::after {
+        background: linear-gradient(90deg, rgba(5, 8, 15, 0.92) 0%, rgba(5, 8, 15, 0.68) 45%, rgba(5, 8, 15, 0.25) 100%),
+          linear-gradient(to top, var(--bg-primary) 0%, transparent 30%);
+      }
+    }
+  }
+
+  &__wrap {
+    position: relative;
+  }
+
+  &__body {
+    position: relative;
+    display: grid;
+    gap: var(--sp-4);
+    margin-top: -64px;
+
+    @include md {
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 36px;
+      margin-top: 0;
+      padding-top: calc(var(--header-h) + 40px);
+      padding-bottom: 56px;
+      align-items: end;
+    }
+
+    @include lg {
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 48px;
+    }
+  }
+
+  &__poster {
+    display: none;
+
+    @include md {
+      display: block;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-pop);
+    }
+  }
+
+  &__info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+
+  &__title {
+    font-size: var(--fs-2xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  &__year {
+    font-weight: 400;
+    color: var(--fg-muted);
+  }
+
+  &__tagline {
+    font-style: italic;
+    color: var(--fg-muted);
+    font-size: var(--fs-md);
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 0;
+    font-size: var(--fs-sm);
+    color: var(--fg-muted);
+
+    li {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    li + li::before {
+      content: '•';
+      margin: 0 10px;
+      color: var(--text-muted);
+    }
+  }
+
+  &__score {
+    gap: 10px !important;
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--fg);
+      font-weight: 700;
+    }
+
+    svg {
+      color: var(--brand-gold);
+    }
+
+    small {
+      font-weight: 400;
+      color: var(--fg-muted);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: var(--sp-1);
+
+    > :first-child {
+      flex: 1 1 100%;
+      @include sm {
+        flex: 0 0 auto;
+      }
+    }
+
+    /* Glass buttons sit on the page background on phones, so they need real contrast there. */
+    .btn--glass {
+      @include below-lg {
+        color: var(--text-primary);
+        background: var(--bg-input);
+        border-color: var(--border-input);
+      }
+      @include md {
+        color: var(--on-media);
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.24);
+      }
+    }
+
+    .btn--ghost {
+      cursor: default;
+    }
+  }
+
+  &__skeletonBtn {
+    width: 190px;
+  }
+
+  &__note {
+    max-width: 62ch;
+    font-size: var(--fs-xs);
+    color: var(--fg-muted);
+
+    &--playable {
+      color: #4ade80;
+    }
+  }
+
+  &__overview {
+    max-width: 70ch;
+
+    h2 {
+      margin-bottom: 4px;
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fg-muted);
+    }
+
+    p {
+      line-height: 1.65;
+      color: var(--fg);
+    }
+  }
+
+  &__tracks,
+  &__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+    gap: 12px 20px;
+    max-width: 880px;
+
+    dt {
+      font-size: var(--fs-2xs);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    dd {
+      margin-top: 2px;
+      font-size: var(--fs-sm);
+      color: var(--fg);
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__tracks {
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    background: var(--accent-soft);
+    border: 1px solid var(--border-color);
+  }
+}
+
+.detailsSkeleton {
+  &__media {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0;
+    max-height: 60vh;
+  }
+
+  &__line {
+    height: 18px;
+    margin-top: 14px;
+    width: 80%;
+
+    &--title {
+      height: 34px;
+      width: 60%;
+    }
+    &--short {
+      width: 40%;
+    }
+  }
+}
+
+/* ── Episodes ─────────────────────────────────────── */
+.episodes {
+  padding-block: var(--sp-5) var(--sp-3);
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: var(--sp-3);
+
+    .sectionTitle {
+      margin: 0;
+    }
+  }
+
+  &__select select {
+    min-height: 44px;
+    max-width: 100%;
+    padding: 0 38px 0 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-input);
+    background-color: var(--bg-card);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a93a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  &__notice {
+    margin-bottom: var(--sp-3);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    font-size: var(--fs-xs);
+    color: var(--text-secondary);
+  }
+
+  &__list {
+    display: grid;
+    gap: var(--sp-3);
+
+    @include lg {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-4) var(--sp-5);
+    }
+  }
+}
+
+.episode {
+  display: grid;
+  grid-template-columns: minmax(124px, 38%) minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+
+  @include md {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  &__still {
+    position: relative;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    align-self: start;
+  }
+
+  &__play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: rgba(5, 8, 15, 0.35);
+    font-size: 26px;
+
+    svg {
+      width: 44px;
+      height: 44px;
+      padding: 11px 9px 11px 13px;
+      border-radius: 50%;
+      background: var(--gradient);
+    }
+
+    @include hover-device {
+      opacity: 0;
+      transition: opacity var(--dur-1) ease;
+      &:hover,
+      &:focus-visible {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__progress {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.25);
+    i {
+      display: block;
+      height: 100%;
+      background: var(--gradient);
+    }
+  }
+
+  &__body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    @include ellipsis(2);
+
+    span {
+      color: var(--text-muted);
+    }
+  }
+
+  &__meta {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+  }
+
+  &__overview {
+    font-size: var(--fs-xs);
+    line-height: 1.55;
+    color: var(--text-secondary);
+    @include ellipsis(3);
+
+    &.isOpen {
+      display: block;
+      -webkit-line-clamp: unset;
+      overflow: visible;
+    }
+  }
+
+  &__more {
+    align-self: flex-start;
+    min-height: 32px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--accent);
+  }
+}
+
+/* ── Cast & videos ────────────────────────────────── */
+.people {
+  padding-block: var(--sp-4) var(--sp-3);
+
+  &__track {
+    @include h-scroll;
+    gap: clamp(12px, 1.6vw, 20px);
+    padding-inline: max(var(--page-gutter), calc((100% - var(--content-max)) / 2 + var(--page-gutter)));
+    scroll-padding-inline: var(--page-gutter);
+    padding-bottom: 8px;
+
+    > li {
+      scroll-snap-align: start;
+    }
+  }
+}
+
+.person {
+  flex: 0 0 104px;
+  text-align: center;
+
+  @include md {
+    flex-basis: 128px;
+  }
+
+  &__photo {
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 8px;
+    background: var(--bg-card);
+  }
+
+  &__name {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    @include ellipsis(2);
+  }
+
+  &__role {
+    margin-top: 2px;
+    font-size: var(--fs-2xs);
+    color: var(--text-muted);
+    @include ellipsis(2);
+  }
+}
+
+.videoCard {
+  flex: 0 0 min(260px, 72vw);
+
+  button {
+    width: 100%;
+    text-align: left;
+    border-radius: var(--radius);
+  }
+
+  &__thumb {
+    position: relative;
+    display: block;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  &__play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 28px;
+    background: rgba(5, 8, 15, 0.3);
+    padding-left: 4px;
+  }
+
+  &__title {
+    display: block;
+    margin-top: 8px;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    @include ellipsis(2);
+  }
+
+  &__type {
+    display: block;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+  }
+}

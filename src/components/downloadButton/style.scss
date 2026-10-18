@@ -1,0 +1,130 @@
+.downloadBtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 8px 0 18px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: var(--on-media);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+
+  &__bar {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.18);
+
+    i {
+      display: block;
+      height: 100%;
+      background: var(--gradient);
+      transition: width 250ms linear;
+    }
+  }
+
+  &__cancel {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    color: inherit;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  &--failed {
+    padding: 8px 8px 8px 16px;
+    flex-wrap: wrap;
+    border-color: var(--red);
+    font-weight: 500;
+  }
+}
+
+.downloadNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 48ch;
+  font-size: var(--fs-xs);
+  color: var(--on-media-muted);
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 16px;
+  }
+}
+
+.downloadSheet {
+  &__title {
+    font-size: var(--fs-lg);
+    padding-right: 48px;
+  }
+
+  &__sub {
+    margin: 2px 0 16px;
+    color: var(--text-secondary);
+    font-size: var(--fs-sm);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 56px;
+    padding: 0 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-input);
+    background: var(--bg-card);
+    text-align: left;
+
+    strong {
+      margin-right: 8px;
+    }
+    small {
+      color: var(--text-muted);
+    }
+
+    &:hover {
+      border-color: var(--accent);
+    }
+
+    svg {
+      font-size: 20px;
+      color: var(--accent);
+    }
+  }
+
+  &__size {
+    margin-left: auto;
+    font-size: var(--fs-xs);
+    color: var(--text-secondary);
+  }
+
+  &__note {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+
+    svg {
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+  }
+}

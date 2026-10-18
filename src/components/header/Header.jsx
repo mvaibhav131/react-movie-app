@@ -1,171 +1,102 @@
-import React, { useState, useEffect } from "react";
-import { HiOutlineSearch } from "react-icons/hi";
-import { SlMenu } from "react-icons/sl";
-import { VscChromeClose } from "react-icons/vsc";
-import { HiSun, HiMoon } from "react-icons/hi";
-import { FiUser, FiLogOut } from "react-icons/fi";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
-import "./style.scss";
-import ContentWrapper from "../contentWrapper/ContentWrapper";
-import logo from "../../assets/movie-logo-react.avif";
-import { useTheme } from "../../context/ThemeContext";
-import { logoutUser } from "../../store/authSlice";
-import LiveModal from "../liveModal/LiveModal";
+import { useEffect, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { IoBookmarkOutline, IoMenu, IoMoonOutline, IoSearchOutline, IoSunnyOutline } from 'react-icons/io5'
+import wordmark from '../../assets/vmflix-wordmark.svg'
+import { DESKTOP_NAV } from '../../config/navigation'
+import { isHeroRoute } from '../../config/routes'
+import { useTheme } from '../../context/ThemeContext'
+import SearchPanel from './SearchPanel'
+import MobileDrawer from './MobileDrawer'
+import ProfileMenu from './ProfileMenu'
+import './style.scss'
 
 const Header = () => {
-  const [show, setShow] = useState("top");
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [mobileMenu, setMobileMenu] = useState(false);
-  const [query, setQuery] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
-  const [showLive, setShowLive] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const dispatch = useDispatch();
-  const { theme, toggleTheme } = useTheme();
-  const { isLoggedIn, user } = useSelector((state) => state.user);
+  const [scrolled, setScrolled] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const { pathname } = useLocation()
+  const { theme, toggleTheme } = useTheme()
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    setMobileMenu(false);
-    setShowSearch(false);
-  }, [location]);
+    setDrawerOpen(false)
+    setSearchOpen(false)
+  }, [pathname])
 
-  const controlNavbar = () => {
-    if (window.scrollY > 200) {
-      if (window.scrollY > lastScrollY && !mobileMenu) {
-        setShow("hide");
-      } else {
-        setShow("show");
+  useEffect(() => {
+    let frame = 0
+    const update = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(frame)
+    }
+  }, [])
+
+  // "/" opens search from anywhere outside a text field.
+  useEffect(() => {
+    const onKey = (event) => {
+      const el = document.activeElement
+      const typing = el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable)
+      if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey) {
+        event.preventDefault()
+        setSearchOpen(true)
       }
-    } else {
-      setShow("top");
     }
-    setLastScrollY(window.scrollY);
-  };
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
-  useEffect(() => {
-    window.addEventListener("scroll", controlNavbar);
-    return () => window.removeEventListener("scroll", controlNavbar);
-  }, [lastScrollY]);
-
-  const searchQueryHandler = (event) => {
-    if (event.key === "Enter" && query.length > 0) {
-      navigate(`/search/${query}`);
-      setTimeout(() => setShowSearch(false), 1000);
-    }
-  };
-
-  const openSearch = () => {
-    setMobileMenu(false);
-    setShowSearch(true);
-  };
-
-  const openMobileMenu = () => {
-    setMobileMenu(true);
-    setShowSearch(false);
-  };
-
-  const navigationHandler = (type) => {
-    navigate(`/explore/${type}`);
-    setMobileMenu(false);
-  };
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    toast.success("Logged out successfully.");
-    navigate("/");
-  };
+  const floating = isHeroRoute(pathname) && !scrolled && !drawerOpen && !searchOpen
 
   return (
     <>
-      <header className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}>
-        <ContentWrapper>
-          <div className="logo" onClick={() => navigate("/")}>
-            <img src={logo} alt="MovieApp logo" />
-            <span className="logoText">VaibhavFlix</span>
-          </div>
+      <header className={`header ${floating ? 'header--floating' : 'header--solid'}`}>
+        <div className="contentWrapper header__bar">
+          <button type="button" className="header__iconBtn header__menu" aria-label="Open menu" aria-haspopup="dialog" aria-expanded={drawerOpen} aria-controls="mobile-drawer" onClick={() => setDrawerOpen(true)}>
+            <IoMenu />
+          </button>
 
-          <ul className="menuItems">
-            <li className="menuItem" onClick={() => navigationHandler("movie")}>
-              Movies
-            </li>
-            <li className="menuItem" onClick={() => navigationHandler("tv")}>
-              TV Shows
-            </li>
-            <li className="menuItem searchIcon" onClick={openSearch}>
-              <HiOutlineSearch />
-            </li>
-            <li className="menuItem liveBtn" onClick={() => setShowLive(true)}>
-              <span className="livePulse" />
-              LIVE
-            </li>
-            <li
-              className="menuItem themeToggle"
-              onClick={toggleTheme}
-              title={theme === "dark" ? "Switch to Light" : "Switch to Dark"}
-            >
-              {theme === "dark" ? <HiSun /> : <HiMoon />}
-            </li>
-            {isLoggedIn ? (
-              <li className="menuItem userMenu">
-                <span className="userName">
-                  <FiUser />
-                  {user?.name?.split(" ")[0]}
-                </span>
-                <button className="logoutBtn" onClick={handleLogout}>
-                  <FiLogOut />
-                </button>
-              </li>
-            ) : (
-              <li
-                className="menuItem loginBtn"
-                onClick={() => navigate("/login")}
-              >
-                Sign In
-              </li>
-            )}
-          </ul>
+          <Link to="/" className="header__logo" aria-label="VM Flix home">
+            <img src={wordmark} alt="VM Flix" width="142" height="36" />
+          </Link>
 
-          <div className="mobileMenuItems">
-            <HiOutlineSearch onClick={openSearch} />
-            <span className="themeToggleMobile" onClick={toggleTheme}>
-              {theme === "dark" ? <HiSun /> : <HiMoon />}
-            </span>
-            {mobileMenu ? (
-              <VscChromeClose onClick={() => setMobileMenu(false)} />
-            ) : (
-              <SlMenu onClick={openMobileMenu} />
-            )}
-          </div>
-        </ContentWrapper>
+          <nav className="header__nav" aria-label="Primary">
+            <ul>
+              {DESKTOP_NAV.map(({ id, label, to, end }) => (
+                <li key={id}>
+                  <NavLink to={to} end={end} className={({ isActive }) => `header__link ${isActive ? 'isActive' : ''}`}>
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        {showSearch && (
-          <div className="searchBar">
-            <ContentWrapper>
-              <div className="searchInput">
-                <HiOutlineSearch className="searchBarIcon" />
-                <input
-                  type="text"
-                  placeholder="Search movies or TV shows..."
-                  autoFocus
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyUp={searchQueryHandler}
-                />
-                <VscChromeClose
-                  className="closeIcon"
-                  onClick={() => setShowSearch(false)}
-                />
-              </div>
-            </ContentWrapper>
+          <div className="header__actions">
+            <button type="button" className="header__iconBtn" aria-label="Search" aria-haspopup="dialog" aria-expanded={searchOpen} onClick={() => setSearchOpen(true)}>
+              <IoSearchOutline />
+            </button>
+            <NavLink to="/my-list" className={({ isActive }) => `header__iconBtn header__list ${isActive ? 'isActive' : ''}`} aria-label="My List">
+              <IoBookmarkOutline />
+              <span className="header__listLabel">My List</span>
+            </NavLink>
+            <button type="button" className="header__iconBtn header__theme" aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'} onClick={toggleTheme}>
+              {theme === 'dark' ? <IoSunnyOutline /> : <IoMoonOutline />}
+            </button>
+            <ProfileMenu />
           </div>
-        )}
+        </div>
       </header>
-      <LiveModal show={showLive} setShow={setShowLive} />
-    </>
-  );
-};
 
-export default Header;
+      <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+    </>
+  )
+}
+
+export default Header

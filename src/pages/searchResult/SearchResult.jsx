@@ -1,72 +1,105 @@
-import React, { useEffect, useState } from 'react';
-import "./style.scss";
-import { useParams } from 'react-router-dom';
-import { fetchData } from '../../utils/api';
-import Spinner from '../../components/spinner/Spinner';
-import ContentWrapper from '../../components/contentWrapper/ContentWrapper';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import MovieCard from '../../components/movieCard/MovieCard';
+import { useCallback, useEffect, useMemo } from 'react'
+import { useParams, useSearchParams, Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { addSearchTerm } from '../../store/librarySlice'
+import { selectSearchHistory } from '../../store/selectors'
+import { searchTitles } from '../../services/discover'
+import { languageLabel } from '../../config/languages'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
+import useInfiniteTitles from '../../hooks/useInfiniteTitles'
+import ContentWrapper from '../../components/contentWrapper/ContentWrapper'
+import PageHeader from '../../components/pageHeader/PageHeader'
+import TitleGrid from '../../components/titleGrid/TitleGrid'
+import { EmptyState } from '../../components/states/States'
+
+const TYPES = [
+  { value: 'all', label: 'All' },
+  { value: 'movie', label: 'Movies' },
+  { value: 'tv', label: 'TV Shows' },
+]
 
 const SearchResult = () => {
-  const [data, setData] = useState(null);
-  const [pageNum, setPageNum] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const { query } = useParams();
-
-  const fetchInitialdata = () => {
-    setLoading(true);
-    fetchData(`/search/multi?query=${query}&page=${pageNum}`).then((res) => {
-      setData(res)
-      setPageNum((prev) => prev + 1)
-      setLoading(false)
-    })
-  }
-
-  const fetchNextPageData = () => {
-    fetchData(`/search/multi?query=${query}&page=${pageNum}`).then((res) => {
-      if (data?.results) {
-        setData({
-        ...data,results:[...data?.results,...res.results]
-      })
-      } else {
-        setData(res);
-      }
-      setPageNum((prev) => prev + 1)
-    })
-  }
+  const { query: routeQuery } = useParams()
+  const [params, setParams] = useSearchParams()
+  const query = (routeQuery || params.get('q') || '').trim()
+  const type = TYPES.some((t) => t.value === params.get('type')) ? params.get('type') : 'all'
+  const lang = params.get('lang') || ''
+  const history = useSelector(selectSearchHistory)
+  const dispatch = useDispatch()
+  useDocumentTitle(query ? `Search: ${query}` : 'Search')
 
   useEffect(() => {
-    setPageNum(1);
-    fetchInitialdata();
-    // fetchNextPageData()
-  }, [query])
-  
-  return (
-    <div className='searchResultsPage'>
-      {loading && <Spinner initial={true} />}
-      {!loading && (
+    if (query) dispatch(addSearchTerm(query))
+  }, [query, dispatch])
+
+  const fetchPage = useCallback((page, signal) => searchTitles(query, { page, signal }), [query])
+  const list = useInfiniteTitles(fetchPage, [query], { sort: 'none', enabled: query.length > 0 })
+
+  const languages = useMemo(() => {
+    const counts = new Map()
+    list.items.forEach((t) => t.language && counts.set(t.language, (counts.get(t.language) || 0) + 1))
+    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([code]) => code)
+  }, [list.items])
+
+  const items = useMemo(
+    () => list.items.filter((t) => (type === 'all' || t.mediaType === type) && (!lang || t.language === lang)),
+    [list.items, type, lang]
+  )
+
+  const setFilter = (key, value) => {
+    const next = new URLSearchParams(params)
+    if (value && value !== 'all') next.set(key, value)
+    else next.delete(key)
+    setParams(next, { replace: true })
+  }
+
+  if (!query) {
+    return (
+      <div className="pageBody">
+        <PageHeader title="Search" intro="Find movies, TV shows and web series. Press / anywhere to open search." />
         <ContentWrapper>
-          {data?.results?.length > 0 ? (
-            <>
-              <div className="pageTitle">
-                {`Search ${data?.total_results > 1 ? "results":"result"} of ${query}`}
-              </div>
-              <InfiniteScroll className='content' dataLength={data?.results.length || []} next={fetchNextPageData} hasMore={pageNum <= data?.total_pages} loader={<Spinner/>} >
-                {data?.results?.map((item, index) => {
-                  if (item.media_type === "person") return;
-                  return (
-                    <MovieCard key={index} data={item} fromSearch={true}/>
-                  )
-                })}
-              </InfiniteScroll>
-            </>
-          ): (
-              <span className = "resultsNotFound">
-                NO RESULT FOUND..
-              </span>
+          {history.length > 0 ? (
+            <div className="chipRow" aria-label="Recent searches">
+              {history.map((term) => (
+                <Link key={term} className="chip" to={`/search/${encodeURIComponent(term)}`}>
+                  {term}
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <EmptyState title="Start typing to search" message="Use the search button in the header." />
           )}
         </ContentWrapper>
-      )}
+      </div>
+    )
+  }
+
+  return (
+    <div className="pageBody">
+      <PageHeader title={`Results for “${query}”`} intro={!list.loading && !list.error ? `${items.length}${list.hasMore ? '+' : ''} ${items.length === 1 ? 'title' : 'titles'} found` : undefined}>
+        <div className="chipRow" role="group" aria-label="Filter results">
+          {TYPES.map((t) => (
+            <button key={t.value} type="button" className="chip" aria-pressed={type === t.value} onClick={() => setFilter('type', t.value)}>
+              {t.label}
+            </button>
+          ))}
+          {languages.length > 1 && <span className="srOnly">Language filters</span>}
+          {languages.length > 1 &&
+            languages.map((code) => (
+              <button key={code} type="button" className="chip" aria-pressed={lang === code} onClick={() => setFilter('lang', lang === code ? '' : code)}>
+                {languageLabel(code)}
+              </button>
+            ))}
+        </div>
+      </PageHeader>
+      <ContentWrapper>
+        <TitleGrid
+          {...list}
+          items={items}
+          emptyTitle={`No results for “${query}”`}
+          emptyMessage="Check the spelling, try a shorter title, or remove the filters."
+        />
+      </ContentWrapper>
     </div>
   )
 }

@@ -1,0 +1,151 @@
+@use '../../mixins' as *;
+
+.music {
+  &__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 560px;
+
+    > svg {
+      position: absolute;
+      left: 16px;
+      font-size: 20px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 48px 0 46px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-input);
+      background: var(--bg-card);
+      font-size: 16px;
+      color: var(--text-primary);
+
+      &::placeholder {
+        color: var(--text-muted);
+      }
+      &:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+      &::-webkit-search-cancel-button {
+        display: none;
+      }
+    }
+
+    button {
+      position: absolute;
+      right: 4px;
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      font-size: 20px;
+      color: var(--text-muted);
+    }
+  }
+
+  &__heading {
+    margin-bottom: var(--sp-3);
+    font-size: var(--fs-lg);
+  }
+
+  &__grid {
+    display: grid;
+    gap: var(--sp-4) var(--sp-3);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    padding-bottom: var(--sp-6);
+  }
+
+  &__skeleton {
+    aspect-ratio: 16 / 11;
+    border-radius: var(--radius);
+  }
+
+  &__setup {
+    margin-bottom: var(--sp-4);
+    padding: var(--sp-4);
+    border-radius: var(--radius-lg);
+    background: var(--accent-soft);
+    border: 1px solid var(--border-color);
+
+    h2 {
+      font-size: var(--fs-lg);
+    }
+
+    p {
+      margin-top: 6px;
+      max-width: 70ch;
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+    }
+
+    code {
+      padding: 1px 6px;
+      border-radius: 6px;
+      background: var(--bg-input);
+      font-size: 0.9em;
+    }
+  }
+
+  &__labels {
+    display: grid;
+    gap: var(--sp-2);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    padding-bottom: var(--sp-6);
+  }
+
+  &__label,
+  &__playlists li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    min-height: 64px;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+
+    > div:first-child {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    strong {
+      font-size: var(--fs-sm);
+      @include truncate;
+    }
+    small {
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+    }
+  }
+
+  &__labelActions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  &__playlists {
+    padding-block: var(--sp-3);
+
+    ul {
+      display: grid;
+      gap: var(--sp-2);
+      margin-top: var(--sp-3);
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    }
+  }
+}
+
+.pageBody > .contentWrapper > .music__heading {
+  margin-top: var(--sp-3);
+}

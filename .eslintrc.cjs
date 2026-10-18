@@ -1,5 +1,6 @@
 module.exports = {
-  env: { browser: true, es2020: true },
+  root: true,
+  env: { browser: true, es2022: true, node: true },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
@@ -11,5 +12,13 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': 'warn',
+    'react/prop-types': 'off',
+    'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
   },
+  overrides: [
+    {
+      files: ['**/*.test.{js,jsx}'],
+      globals: { describe: 'readonly', it: 'readonly', expect: 'readonly', vi: 'readonly', beforeEach: 'readonly', afterEach: 'readonly' },
+    },
+  ],
 }

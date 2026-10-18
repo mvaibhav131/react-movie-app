@@ -1,0 +1,50 @@
+.freePage {
+  &__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 560px;
+
+    > svg {
+      position: absolute;
+      left: 16px;
+      font-size: 20px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 48px 0 46px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-input);
+      background: var(--bg-card);
+      font-size: 16px;
+      color: var(--text-primary);
+
+      &::placeholder {
+        color: var(--text-muted);
+      }
+      &:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+      &::-webkit-search-cancel-button {
+        display: none;
+      }
+    }
+
+    button {
+      position: absolute;
+      right: 4px;
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      font-size: 20px;
+      color: var(--text-muted);
+    }
+  }
+}

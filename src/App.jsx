@@ -1,85 +1,130 @@
-
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Toaster } from 'react-hot-toast'
 import './App.scss'
-import { fetchData } from './utils/api';
-import { useDispatch, useSelector } from 'react-redux';
-import { getApiConfiguration, getGenres } from './store/homeSlice';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import Home from './pages/home/Home';
-import Details from './pages/details/Details';
-import SearchResult from './pages/searchResult/SearchResult';
-import Explore from './pages/explore/Explore';
-import { PageNotFound } from './pages/404/PageNotFound';
-import Header from './components/header/Header';
-import Footer from './components/footer/Footer';
-import Register from './components/auth/registration/Registration';
-import Login from './components/auth/login/Login';
+import { fetchData } from './utils/api'
+import { getGenres } from './store/homeSlice'
+import { isHeroRoute, isWatchRoute } from './config/routes'
+import Header from './components/header/Header'
+import Footer from './components/footer/Footer'
+import BottomNav from './components/bottomNav/BottomNav'
+import ScrollManager from './components/scrollManager/ScrollManager'
+import ErrorBoundary from './components/errorBoundary/ErrorBoundary'
+import Spinner from './components/spinner/Spinner'
 
+const Home = lazy(() => import('./pages/home/Home'))
+const Browse = lazy(() => import('./pages/browse/Browse'))
+const FreeMovies = lazy(() => import('./pages/free/FreeMovies'))
+const Details = lazy(() => import('./pages/details/Details'))
+const Watch = lazy(() => import('./pages/watch/Watch'))
+const Marathi = lazy(() => import('./pages/marathi/Marathi'))
+const SouthIndian = lazy(() => import('./pages/southIndian/SouthIndian'))
+const Live = lazy(() => import('./pages/live/Live'))
+const Music = lazy(() => import('./pages/music/Music'))
+const MyList = lazy(() => import('./pages/myList/MyList'))
+const Downloads = lazy(() => import('./pages/downloads/Downloads'))
+const Settings = lazy(() => import('./pages/settings/Settings'))
+const SearchResult = lazy(() => import('./pages/searchResult/SearchResult'))
+const Login = lazy(() => import('./components/auth/login/Login'))
+const Register = lazy(() => import('./components/auth/registration/Registration'))
+const PageNotFound = lazy(() => import('./pages/404/PageNotFound'))
 
-function App() {
-    const dispatch = useDispatch();
-    const { url } = useSelector((state) => state.home);
-
-    useEffect(() => {
-        fetchApiConfig();
-        genresCall();
-    }, []);
-
-    const fetchApiConfig = () => {
-        fetchData("/configuration").then((res) => {
-            const url = {
-                backdrop: res.images.secure_base_url + "original",
-                poster: res.images.secure_base_url + "original",
-                profile: res.images.secure_base_url + "original",
-            };
-            dispatch(getApiConfiguration(url));
-        });
-    };
-
-    const genresCall = async () => {
-        let promises = [];
-        let endPoints = ["tv", "movie"];
-        let allGenres = {};
-        endPoints.forEach((url) => {
-            promises.push(fetchData(`/genre/${url}/list`));
-        });
-        const data = await Promise.all(promises);
-        data.map(({ genres }) => {
-            return genres.map((item) => (allGenres[item.id] = item));
-        });
-        dispatch(getGenres(allGenres));
-    };
-
-    return (
-        <BrowserRouter>
-            <Toaster
-                position="top-right"
-                toastOptions={{
-                    duration: 3000,
-                    style: {
-                        background: 'var(--bg-card)',
-                        color: 'var(--text-primary)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '12px',
-                        fontFamily: "'Poppins', sans-serif",
-                        fontSize: '14px',
-                    },
-                }}
-            />
-            <Header />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/:mediaType/:id" element={<Details />} />
-                <Route path="/search/:query" element={<SearchResult />} />
-                <Route path="/explore/:mediaType" element={<Explore />} />
-                <Route path='/register' element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="*" element={<PageNotFound />} />
-            </Routes>
-            <Footer />
-        </BrowserRouter>
-    );
+/** Old /explore/:mediaType links keep working. */
+const ExploreRedirect = () => {
+  const { mediaType } = useParams()
+  return <Navigate to={mediaType === 'tv' ? '/tv-shows' : '/movies'} replace />
 }
 
-export default App;
+const AppShell = () => {
+  const { pathname } = useLocation()
+  const watching = isWatchRoute(pathname)
+  const flush = isHeroRoute(pathname) || watching
+
+  return (
+    <>
+      <a href="#main" className="skipLink">
+        Skip to content
+      </a>
+      <ScrollManager />
+      {!watching && <Header />}
+      <main id="main" className={`appMain ${flush ? 'appMain--flush' : ''}`} tabIndex={-1}>
+        <ErrorBoundary resetKey={pathname}>
+          <Suspense
+            fallback={
+              <div className="routeFallback">
+                <Spinner />
+              </div>
+            }
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/movies" element={<Browse kind="movie" />} />
+              <Route path="/free" element={<FreeMovies />} />
+              <Route path="/tv-shows" element={<Browse kind="tv" />} />
+              <Route path="/web-series" element={<Browse kind="web" />} />
+              <Route path="/marathi" element={<Marathi />} />
+              <Route path="/south-indian" element={<SouthIndian />} />
+              <Route path="/south-indian/:lang" element={<SouthIndian />} />
+              <Route path="/live" element={<Live />} />
+              <Route path="/music" element={<Music />} />
+              <Route path="/my-list" element={<MyList />} />
+              <Route path="/downloads" element={<Downloads />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/search" element={<SearchResult />} />
+              <Route path="/search/:query" element={<SearchResult />} />
+              <Route path="/explore/:mediaType" element={<ExploreRedirect />} />
+              <Route path="/watch/:mediaType/:id" element={<Watch />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/:mediaType/:id" element={<Details />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
+      </main>
+      {!watching && <Footer />}
+      {!watching && <BottomNav />}
+    </>
+  )
+}
+
+const App = () => {
+  const dispatch = useDispatch()
+
+  // Genre names for chips; not needed for first paint, so failures are silent.
+  useEffect(() => {
+    const controller = new AbortController()
+    Promise.all(['tv', 'movie'].map((type) => fetchData(`/genre/${type}/list`, undefined, { signal: controller.signal, ttl: 24 * 3600 * 1000 })))
+      .then((lists) => {
+        const all = {}
+        lists.forEach(({ genres }) => genres.forEach((genre) => (all[genre.id] = genre)))
+        dispatch(getGenres(all))
+      })
+      .catch(() => {})
+    return () => controller.abort()
+  }, [dispatch])
+
+  return (
+    <BrowserRouter>
+      <Toaster
+        position="bottom-center"
+        containerClassName="toaster"
+        toastOptions={{
+          duration: 2800,
+          style: {
+            background: 'var(--bg-elevated)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '12px',
+            fontSize: '14px',
+            maxWidth: 'min(420px, calc(100vw - 32px))',
+          },
+        }}
+      />
+      <AppShell />
+    </BrowserRouter>
+  )
+}
+
+export default App

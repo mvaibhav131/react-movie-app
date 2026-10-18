@@ -1,0 +1,26 @@
+.ytPlayer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  display: grid;
+  place-items: center;
+
+  > div,
+  iframe {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  &--failed {
+    gap: 12px;
+    padding: 24px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.85);
+    align-content: center;
+    justify-items: center;
+    font-size: var(--fs-sm);
+  }
+}

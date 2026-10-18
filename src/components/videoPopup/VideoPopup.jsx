@@ -1,30 +1,11 @@
-import React from "react";
-import ReactPlayer from "react-player/youtube";
-import { IoClose } from "react-icons/io5";
-import "./style.scss";
+import Modal from '../modal/Modal'
+import YouTubePlayer from '../youtubePlayer/YouTubePlayer'
 
-const VideoPopup = ({ show, setShow, videoId, setVideoId }) => {
-    const hidePopup = () => {
-        setShow(false);
-        setVideoId(null);
-    };
-    return (
-        <div className={`videoPopup ${show ? "visible" : ""}`}>
-            <div className="opacityLayer" onClick={hidePopup} />
-            <div className="videoPlayer">
-                <button className="closeBtn" onClick={hidePopup}>
-                    <IoClose />
-                </button>
-                <ReactPlayer
-                    url={`https://www.youtube.com/watch?v=${videoId}`}
-                    controls
-                    width="100%"
-                    height="100%"
-                    playing={show}
-                />
-            </div>
-        </div>
-    );
-};
+/** Trailer / video popup. Playback stops when closed because the player unmounts with the modal. */
+const VideoPopup = ({ open, onClose, videoId, title }) => (
+  <Modal open={open && !!videoId} onClose={onClose} title={title || 'Video'} size="video">
+    {videoId && <YouTubePlayer videoId={videoId} title={title} />}
+  </Modal>
+)
 
-export default VideoPopup;
+export default VideoPopup

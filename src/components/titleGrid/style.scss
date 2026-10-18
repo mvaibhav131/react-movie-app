@@ -1,0 +1,36 @@
+@use '../../mixins' as *;
+
+.titleGrid {
+  --grid-min: 104px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-min), 1fr));
+  gap: var(--sp-4) clamp(10px, 1.6vw, 20px);
+
+  @include sm {
+    --grid-min: 140px;
+  }
+  @include md {
+    --grid-min: 160px;
+  }
+  @include lg {
+    --grid-min: 176px;
+  }
+  @include xl {
+    --grid-min: 190px;
+  }
+
+  &__skeleton {
+    min-width: 0;
+  }
+
+  &__sentinel {
+    height: 1px;
+  }
+
+  &__end {
+    padding: var(--sp-5) 0 var(--sp-3);
+    text-align: center;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+  }
+}

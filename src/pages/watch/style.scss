@@ -1,0 +1,147 @@
+@use '../../mixins' as *;
+
+.watch {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+
+  > .vp {
+    flex: 1;
+  }
+
+  &__loading {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: var(--fs-sm);
+  }
+
+  &__back {
+    position: absolute;
+    top: max(10px, var(--safe-top));
+    left: max(10px, var(--safe-left));
+  }
+
+  &__panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+    text-align: center;
+    background: radial-gradient(ellipse at top, rgba(255, 46, 99, 0.18), transparent 60%), #05070d;
+
+    h1 {
+      font-size: var(--fs-xl);
+    }
+
+    p {
+      max-width: 48ch;
+      color: rgba(255, 255, 255, 0.75);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  &__toast {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+
+    button {
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 600;
+    }
+  }
+}
+
+.ytStage {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: max(8px, var(--safe-top)) max(12px, var(--safe-right)) 8px max(12px, var(--safe-left));
+    background: #05070d;
+
+    div {
+      flex: 1;
+      min-width: 0;
+    }
+
+    strong,
+    small {
+      display: block;
+      @include truncate;
+    }
+
+    strong {
+      font-size: var(--fs-sm);
+    }
+
+    small {
+      font-size: var(--fs-xs);
+      color: rgba(255, 255, 255, 0.65);
+    }
+  }
+
+  &__stage {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    place-items: center;
+    padding: 0 var(--safe-right) 0 var(--safe-left);
+  }
+
+  &__frame {
+    position: relative;
+    width: min(100%, calc((100dvh - 120px) * 16 / 9));
+    aspect-ratio: 16 / 9;
+    background: #000;
+    display: grid;
+    place-items: center;
+
+    > div,
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+
+  &__credit {
+    padding: 8px 12px calc(8px + var(--safe-bottom));
+    text-align: center;
+    font-size: var(--fs-xs);
+    color: rgba(255, 255, 255, 0.65);
+  }
+}

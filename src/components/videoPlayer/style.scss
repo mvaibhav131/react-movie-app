@@ -1,0 +1,520 @@
+@use '../../mixins' as *;
+
+.vp {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+
+  &:fullscreen,
+  &:-webkit-full-screen {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  &--playing:not(&--controls) {
+    cursor: none;
+  }
+
+  &__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+    pointer-events: none;
+
+    &::cue {
+      background: rgba(0, 0, 0, 0.72);
+      color: #fff;
+      font-size: clamp(14px, 2.2vw, 30px);
+      font-family: var(--font-sans);
+    }
+  }
+
+  /* Catches clicks and taps. Controls sit above it and are inert while hidden, so nothing behind them can be hit. */
+  &__stage {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  &__loading {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+
+  &__spinner {
+    width: 56px;
+    height: 56px;
+    border: 4px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+
+  &__osd {
+    position: absolute;
+    top: 16%;
+    left: 50%;
+    z-index: 3;
+    transform: translateX(-50%);
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    background: rgba(0, 0, 0, 0.72);
+    font-weight: 600;
+    pointer-events: none;
+    animation: fadeIn 120ms ease;
+  }
+
+  &__bigPlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    margin: -44px 0 0 -44px;
+    border-radius: 50%;
+    font-size: 44px;
+    color: #fff;
+    background: var(--gradient);
+    box-shadow: 0 12px 40px rgba(255, 46, 99, 0.5);
+    padding-left: 6px;
+  }
+
+  &__top,
+  &__bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    padding-left: max(12px, var(--safe-left));
+    padding-right: max(12px, var(--safe-right));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease;
+  }
+
+  &--controls &__top,
+  &--controls &__bottom {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &__top {
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-top: max(10px, var(--safe-top));
+    padding-bottom: 36px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.78), transparent);
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    strong {
+      font-size: var(--fs-md);
+      font-weight: 600;
+      @include truncate;
+    }
+
+    span {
+      font-size: var(--fs-xs);
+      color: rgba(255, 255, 255, 0.72);
+      @include truncate;
+    }
+  }
+
+  &__bottom {
+    bottom: 0;
+    padding-top: 44px;
+    padding-bottom: max(8px, var(--safe-bottom));
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.88), transparent);
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  &__btn {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 26px;
+    color: #fff;
+    transition: background-color var(--dur-1) ease, color var(--dur-1) ease;
+
+    @include hover-device {
+      &:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+    }
+
+    &.isOn {
+      color: var(--brand-gold);
+    }
+
+    &:focus-visible {
+      outline-color: var(--brand-gold);
+    }
+  }
+
+  &__spacer {
+    flex: 1;
+  }
+
+  &__volume {
+    display: flex;
+    align-items: center;
+
+    input[type='range'] {
+      width: 0;
+      opacity: 0;
+      height: 20px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      cursor: pointer;
+      transition: width 200ms ease, opacity 200ms ease;
+
+      &::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 2px;
+        background: linear-gradient(to right, #fff var(--fill, 100%), rgba(255, 255, 255, 0.3) var(--fill, 100%));
+      }
+      &::-moz-range-track {
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+      &::-moz-range-progress {
+        height: 4px;
+        border-radius: 2px;
+        background: #fff;
+      }
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 12px;
+        height: 12px;
+        margin-top: -4px;
+        border-radius: 50%;
+        background: #fff;
+      }
+      &::-moz-range-thumb {
+        width: 12px;
+        height: 12px;
+        border: 0;
+        border-radius: 50%;
+        background: #fff;
+      }
+    }
+
+    &:hover input[type='range'],
+    &:focus-within input[type='range'] {
+      width: 84px;
+      opacity: 1;
+      margin-right: 10px;
+    }
+
+    @media (pointer: coarse) {
+      input[type='range'] {
+        display: none;
+      }
+    }
+  }
+
+  &__time {
+    margin-left: 6px;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  &__timeSep {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  &__hideXs {
+    @media (max-width: 480px) {
+      display: none;
+    }
+  }
+
+  &__skip {
+    @media (pointer: coarse) {
+      display: none;
+    }
+  }
+
+  /* Large touch targets in the middle of the picture (coarse pointers only). */
+  &__center {
+    display: none;
+
+    @media (pointer: coarse) {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(20px, 8vw, 56px);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 250ms ease;
+    }
+  }
+
+  &--controls &__center {
+    opacity: 1;
+  }
+
+  &--controls &__center .vp__btn {
+    pointer-events: auto;
+  }
+
+  &__btn--round {
+    width: 56px;
+    height: 56px;
+    font-size: 34px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  &__btn--big {
+    width: 76px;
+    height: 76px;
+    font-size: 44px;
+  }
+
+  &__error,
+  &__ended {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.72);
+  }
+
+  &__error {
+    pointer-events: none;
+
+    p {
+      font-weight: 600;
+      font-size: var(--fs-md);
+    }
+    span {
+      font-size: var(--fs-sm);
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  &__endedActions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  @include landscape-short {
+    &__bottom {
+      padding-top: 28px;
+    }
+    &__btn {
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+    }
+    &__btn--round {
+      width: 48px;
+      height: 48px;
+    }
+    &__btn--big {
+      width: 60px;
+      height: 60px;
+    }
+  }
+}
+
+/* ── Seek bar ───────────────────────────────────────── */
+.seekBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  cursor: pointer;
+  touch-action: none;
+  border-radius: 4px;
+
+  @media (pointer: coarse) {
+    height: 38px;
+  }
+
+  &__track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.26);
+    transition: height 150ms ease;
+  }
+
+  &:hover &__track,
+  &.isDragging &__track,
+  &:focus-visible &__track {
+    height: 7px;
+  }
+
+  &__buffer,
+  &__played {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    transform-origin: left center;
+  }
+
+  &__buffer {
+    background: rgba(255, 255, 255, 0.38);
+  }
+
+  &__played {
+    background: var(--gradient);
+  }
+
+  &__thumb {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transform: scale(0);
+    transition: transform 150ms ease;
+    pointer-events: none;
+
+    @media (pointer: coarse) {
+      transform: scale(1);
+    }
+  }
+
+  &:hover &__thumb,
+  &.isDragging &__thumb,
+  &:focus-visible &__thumb {
+    transform: scale(1);
+  }
+
+  &__bubble {
+    position: absolute;
+    bottom: 18px;
+    transform: translateX(-50%);
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.88);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+}
+
+/* ── Settings popover ───────────────────────────────── */
+.vpSettings {
+  position: relative;
+
+  &__panel {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 10px);
+    z-index: 8;
+    min-width: 230px;
+    max-height: min(60vh, 360px);
+    overflow-y: auto;
+    padding: 6px;
+    border-radius: var(--radius);
+    background: rgba(18, 22, 34, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+
+    @media (max-width: 640px) {
+      position: fixed;
+      left: max(10px, var(--safe-left));
+      right: max(10px, var(--safe-right));
+      bottom: calc(86px + var(--safe-bottom));
+      max-height: 50dvh;
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    text-align: left;
+    font-size: var(--fs-sm);
+
+    @include hover-device {
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    &--back {
+      justify-content: flex-start;
+      gap: 8px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0;
+      margin-bottom: 4px;
+    }
+  }
+
+  &__value {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -1,26 +1,13 @@
-import React,{ useEffect, useState } from "react";
-import { fetchData } from "../utils/api";
-const useFetch = (url) => {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(null);
-    const [error, setError] = useState(null);
+import useAsync from './useAsync'
+import { fetchData } from '../utils/api'
 
-    useEffect(() => {
-        setLoading("loading...");
-        setData(null);
-        setError(null);
-        fetchData(url)
-            .then((res) => {
-                setLoading(false);
-                setData(res);
-            })
-            .catch((err) => {
-                console.log(err)
-                setLoading(false);
-                setError("Something went wrong!");
-            });
-    }, [url]);
-    return { data, loading, error };
-};
+/** Fetches a TMDB path (optionally with a query string). Same shape as before: { data, loading, error }. */
+const useFetch = (url, { params, enabled = true } = {}) => {
+  const paramsKey = params ? JSON.stringify(params) : ''
+  const { data, loading, error, reload } = useAsync((signal) => fetchData(url, params, { signal }), [url, paramsKey], {
+    enabled: enabled && !!url,
+  })
+  return { data, loading, error, reload }
+}
 
-export default useFetch;
+export default useFetch

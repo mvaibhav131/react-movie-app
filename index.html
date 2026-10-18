@@ -1,13 +1,35 @@
 ﻿<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/movie-logo.avif" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VaibhavFlix</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0B0F19" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="VM Flix - discover movies, TV shows, web series, Marathi and South Indian cinema, live cricket and music videos." />
+    <link rel="preconnect" href="https://image.tmdb.org" crossorigin />
+    <link rel="preconnect" href="https://api.themoviedb.org" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>VM Flix</title>
+    <style>
+      html { background: #0b0f19; }
+      html[data-theme='light'] { background: #f5f6fa; }
+    </style>
+    <script>
+      try {
+        var t = localStorage.getItem('movieapp_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>VM Flix needs JavaScript enabled to run.</noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

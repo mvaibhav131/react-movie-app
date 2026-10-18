@@ -1,0 +1,110 @@
+@use '../../mixins' as *;
+
+/* Track rails use 16:9 art at a size suited to music videos. */
+.carousel.carousel--track {
+  --card-w: clamp(210px, 58vw, 280px);
+  --art-ratio: 0.5625;
+}
+
+.trackCard {
+  position: relative;
+  min-width: 0;
+
+  &__play {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border-radius: var(--radius);
+  }
+
+  &__art {
+    position: relative;
+    display: block;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--skeleton-base);
+    box-shadow: var(--shadow-card);
+    transition: transform var(--dur-2) var(--ease);
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(5, 8, 15, 0.35);
+    color: #fff;
+    font-size: 26px;
+    opacity: 0;
+    transition: opacity var(--dur-2) ease;
+
+    svg {
+      width: 46px;
+      height: 46px;
+      padding: 12px 10px 12px 14px;
+      border-radius: 50%;
+      background: var(--gradient);
+    }
+  }
+
+  &__time {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.78);
+    color: #fff;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__title {
+    display: block;
+    margin-top: 10px;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    line-height: 1.35;
+    @include ellipsis(2);
+  }
+
+  &__artist {
+    display: block;
+    margin-top: 2px;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    @include truncate;
+  }
+
+  &__fav {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 19px;
+    color: #fff;
+    background: rgba(8, 11, 19, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    &.isOn {
+      color: var(--brand-red);
+      background: rgba(255, 255, 255, 0.92);
+    }
+  }
+
+  @include hover-device {
+    &:hover &__art {
+      transform: translateY(-3px);
+    }
+    &:hover &__overlay,
+    &:focus-within &__overlay {
+      opacity: 1;
+    }
+  }
+}

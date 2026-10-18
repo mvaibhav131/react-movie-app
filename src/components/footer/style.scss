@@ -1,86 +1,106 @@
-@import "../../mixins.scss";
+@use '../../mixins' as *;
 
 .footer {
-    background: var(--footer-bg);
-    padding: 40px 0 28px;
+  margin-top: var(--sp-7);
+  padding: var(--sp-7) 0 var(--sp-5);
+  background: var(--footer-bg);
+  color: rgba(244, 246, 251, 0.72);
+  border-top: 1px solid var(--border-color);
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-6) var(--sp-5);
+
+    @include md {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+  }
+
+  &__brand {
+    grid-column: 1 / -1;
+    @include md {
+      grid-column: auto;
+    }
+
+    img {
+      height: 36px;
+      width: auto;
+      margin-bottom: var(--sp-3);
+    }
+
+    p {
+      max-width: 44ch;
+      font-size: var(--fs-sm);
+    }
+  }
+
+  h2 {
+    margin-bottom: var(--sp-3);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: #fff;
-    position: relative;
+  }
 
-    &::before {
-        content: '';
-        display: block;
-        height: 2px;
-        background: var(--gradient);
-        margin-bottom: 40px;
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    font-size: var(--fs-sm);
+
+    @include hover-device {
+      &:hover {
+        color: #fff;
+      }
     }
+  }
 
-    .contentWrapper {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        gap: 0;
-    }
+  &__social {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 6px !important;
 
-    .menuItems {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px 20px;
-        margin-bottom: 28px;
+    a {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 20px;
+      background: rgba(255, 255, 255, 0.07);
+      transition: background-color var(--dur-1) ease;
 
-        @include md { gap: 8px 32px; margin-bottom: 36px; }
-
-        .menuItem {
-            font-size: 13px;
-            color: rgba(255,255,255,0.65);
-            cursor: pointer;
-            transition: color 0.2s;
-            font-weight: 500;
-
-            @include md { font-size: 14px; }
-            &:hover { color: var(--accent-hover); }
+      @include hover-device {
+        &:hover {
+          background: var(--accent);
+          color: #fff;
         }
+      }
     }
+  }
 
-    .infoText {
-        font-size: 12px;
-        line-height: 1.7;
-        color: rgba(255,255,255,0.4);
-        text-align: center;
-        max-width: 480px;
-        margin-bottom: 28px;
+  &__legal {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: var(--sp-6);
+    padding-top: var(--sp-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: var(--fs-xs);
+    color: rgba(244, 246, 251, 0.56);
 
-        @include md { font-size: 13px; }
+    a {
+      color: rgba(244, 246, 251, 0.8);
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
-
-    .socialIcons {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-
-        .icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.25s;
-            font-size: 16px;
-
-            a { color: rgba(255,255,255,0.7); display: flex; align-items: center; }
-
-            &:hover {
-                background: var(--gradient);
-                border-color: transparent;
-                transform: translateY(-2px);
-                a { color: #fff; }
-            }
-        }
-    }
+  }
 }

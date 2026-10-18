@@ -1,236 +1,215 @@
-@import "../../../mixins.scss";
+@use '../../../mixins' as *;
 
-.heroBanner {
-    width: 100%;
-    height: 520px;
-    margin-bottom: 30px;
-    background-color: var(--bg-secondary);
-    display: flex;
+.hero {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: clamp(500px, 76vh, 820px);
+  height: clamp(500px, 76svh, 820px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  touch-action: pan-y;
+  color: var(--on-media);
+
+  &--loading,
+  &--empty {
     align-items: center;
-    position: relative;
-    overflow: hidden;
+  }
 
-    @include md { height: 680px; }
-    @include lg { height: 760px; }
-
-    .heroBannerSkeleton {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 0;
-    }
-
-    .backdrop-img {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-
-        .lazy-load-image-background {
-            width: 100%;
-            height: 100%;
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center top;
-                filter: brightness(0.72);
-            }
-        }
-    }
-
-    .opacity-layer {
-        width: 100%;
-        height: 50%;
-        background: var(--hero-gradient);
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        pointer-events: none;
-    }
-}
-
-.heroBannerContent {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    color: #fff;
-    position: relative;
-    z-index: 2;
-    max-width: 650px;
-    padding-top: 30px;
-
-    @include md { padding-top: 0; }
-
-    .title {
-        font-size: 36px;
-        font-weight: 800;
-        line-height: 1.15;
-        margin-bottom: 14px;
-        letter-spacing: -0.5px;
-        text-shadow: 0 2px 12px rgba(0,0,0,0.4);
-
-        @include md { font-size: 56px; }
-        @include lg { font-size: 66px; }
-    }
-
-    .subTitle {
-        font-size: 15px;
-        font-weight: 400;
-        margin-bottom: 36px;
-        opacity: 0.85;
-        max-width: 480px;
-        line-height: 1.6;
-
-        @include md { font-size: 18px; }
-    }
-
-    .searchInput {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        max-width: 560px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 50px;
-        overflow: hidden;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.35);
-
-        .searchIcon {
-            font-size: 20px;
-            color: #6C63FF;
-            margin-left: 18px;
-            flex-shrink: 0;
-        }
-
-        input {
-            flex: 1;
-            height: 54px;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 15px;
-            font-family: 'Poppins', sans-serif;
-            color: #1A1A2E;
-            padding: 0 14px;
-
-            &::placeholder { color: #8A8AAA; }
-
-            @include md { font-size: 17px; height: 60px; }
-        }
-
-        button {
-            height: 54px;
-            padding: 0 24px;
-            background: var(--gradient);
-            color: #fff;
-            border: none;
-            outline: none;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            border-radius: 0 50px 50px 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-            flex-shrink: 0;
-
-            &:hover { opacity: 0.88; }
-
-            @include md { height: 60px; padding: 0 32px; font-size: 16px; }
-        }
-    }
-}
-
-.backdrop-img{
-    width: 100%;
-    height: 100%;
-    position:absolute;
-    left: 0;
-    top:0;
-    opacity:0.7;
-    overflow: hidden;
-    .lazy-load-image-background{
-        width: 100%;
-        height:100%;
-        img{
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-    }
-}
-.opacity-layer{
-    width: 100%;
-    height: 250px;
-    background: linear-gradient(
-        180deg,
-        rgba(112, 66, 192, 0) 0%,
-        #1b1744 78%
-    );
+  &__skeleton {
     position: absolute;
-    bottom: 0;
-    left:0;
-}
-.heroBannerContent{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    color:rgb(255, 255, 255);
-    text-align: center;
+    inset: 0;
+    border-radius: 0;
+  }
+
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  &__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 900ms ease;
+
+    &.isActive {
+      opacity: 1;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      max-width: none;
+    }
+  }
+
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(5, 8, 15, 0.96) 0%, rgba(5, 8, 15, 0.7) 32%, rgba(5, 8, 15, 0.1) 70%, rgba(5, 8, 15, 0.45) 100%);
+
+    @include md {
+      background: linear-gradient(90deg, rgba(5, 8, 15, 0.88) 0%, rgba(5, 8, 15, 0.55) 42%, rgba(5, 8, 15, 0) 75%),
+        linear-gradient(to top, var(--bg-primary) 0%, rgba(5, 8, 15, 0.1) 22%, rgba(5, 8, 15, 0.35) 100%);
+    }
+  }
+
+  &__wrap {
     position: relative;
-    max-width: 800px;
-    margin:0 auto;
-    .title{
-        font-size: 51px;
-        font-weight: 750;
-        @include md{
-            margin-bottom: 0;
-            font-size: 90px;
-        }
+    padding-bottom: 64px;
+    padding-top: calc(var(--header-h) + var(--safe-top) + 24px);
+
+    @include md {
+      padding-bottom: 88px;
     }
-    .subTitle{
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 42px;
-        @include md{
-            font-size: 24px;
-        }
+  }
+
+  &__content {
+    max-width: 640px;
+    animation: riseIn 600ms var(--ease);
+  }
+
+  &__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    margin-bottom: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--on-media-muted);
+  }
+
+  &__title {
+    font-size: var(--fs-3xl);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
+    @include ellipsis(3);
+  }
+
+  &__facts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    margin-top: 12px;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--on-media-muted);
+  }
+
+  &__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--brand-gold);
+    font-weight: 700;
+  }
+
+  &__overview {
+    margin-top: 12px;
+    max-width: 56ch;
+    font-size: var(--fs-md);
+    line-height: 1.55;
+    color: var(--on-media-muted);
+    @include ellipsis(3);
+
+    @include md {
+      @include ellipsis(4);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    display: none;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    border-radius: 50%;
+    font-size: 22px;
+    color: #fff;
+    background: rgba(8, 11, 19, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: background-color var(--dur-1) ease;
+
+    &--prev {
+      left: 4px;
+    }
+    &--next {
+      right: 4px;
     }
 
-    .searchInput{
-        display: flex;
-        align-items: center;
-        width: 100%;
-        input{
-            width: calc(100% - 100px);
-            height:60px;
-            background-color: white;
-            outline: 0;
-            border: 0;
-            border-radius: 30px 0 0 30px;
-            font-size: 21px;
-            padding: 0 15px;
+    /* Only where the gutters leave room, so arrows never cover the text. */
+    @include xl {
+      @include hover-device {
+        display: grid;
+        &:hover {
+          background: var(--accent);
         }
+      }
     }
-    button{
-        width: 100px;
-        height: 60px;
-        background: var(--gradient);
-        color:white;
-        outline:0;
-        border:0;
-        border-radius: 0 30px 30px 0;
-        font-size: 16px;
-        cursor: pointer;
-        @include md{
-            width: 150px;
-            height: 60px;
-            font-size: 18px;
-        }
+  }
+
+  &__dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 18px;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+
+    @include md {
+      bottom: 28px;
+      right: var(--page-gutter);
+      left: auto;
+    }
+  }
+
+  &__dot {
+    position: relative;
+    width: 28px;
+    height: 28px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      margin: -4px 0 0 -4px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.45);
+      transition: width var(--dur-2) var(--ease), margin var(--dur-2) var(--ease), background-color var(--dur-1) ease;
     }
 
+    &.isActive::after {
+      width: 22px;
+      margin-left: -11px;
+      background: var(--gradient);
+    }
+  }
 }

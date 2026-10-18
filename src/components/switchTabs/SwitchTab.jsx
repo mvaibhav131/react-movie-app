@@ -1,48 +1,58 @@
-import React, { useState, useRef, useEffect } from 'react';
-import "./style.scss";
+import { useId, useRef, useState } from 'react'
+import './style.scss'
 
-const SwitchTab = ({ data, onTabChange }) => {
-    const [selectedTab, setSelectedTab] = useState(0);
-    const [bgStyle, setBgStyle] = useState({ left: 0, width: 0 });
-    const tabRefs = useRef([]);
+/**
+ * Segmented control built on the WAI-ARIA tabs pattern (arrow keys move between options).
+ * Use `value` (a label from `data`) to control it, or omit it and read selections via `onTabChange(label, index)`.
+ */
+const SwitchTab = ({ data, onTabChange, value, label = 'Options', className = '' }) => {
+  const [internal, setInternal] = useState(0)
+  const baseId = useId()
+  const refs = useRef([])
+  const selected = value !== undefined ? Math.max(0, data.indexOf(value)) : internal
 
-    // Measure tab position and width on selection change
-    useEffect(() => {
-        const el = tabRefs.current[selectedTab];
-        if (el) {
-            setBgStyle({ left: el.offsetLeft, width: el.offsetWidth });
-        }
-    }, [selectedTab]);
+  const select = (index) => {
+    setInternal(index)
+    onTabChange?.(data[index], index)
+  }
 
-    // Measure on mount (after first render)
-    useEffect(() => {
-        const el = tabRefs.current[0];
-        if (el) setBgStyle({ left: el.offsetLeft, width: el.offsetWidth });
-    }, []);
+  const onKeyDown = (event, index) => {
+    const last = data.length - 1
+    let next = index
+    if (event.key === 'ArrowRight') next = index === last ? 0 : index + 1
+    else if (event.key === 'ArrowLeft') next = index === 0 ? last : index - 1
+    else if (event.key === 'Home') next = 0
+    else if (event.key === 'End') next = last
+    else return
+    event.preventDefault()
+    select(next)
+    refs.current[next]?.focus()
+  }
 
-    const activeTab = (tab, index) => {
-        setSelectedTab(index);
-        onTabChange(tab, index);
-    };
+  return (
+    <div className={`switchingTabs ${className}`.trim()}>
+      <div className="tabItems" role="tablist" aria-label={label}>
+        {data.map((tab, index) => (
+          <button
+            key={tab}
+            id={`${baseId}-${index}`}
+            ref={(el) => {
+              refs.current[index] = el
+            }}
+            type="button"
+            role="tab"
+            aria-selected={selected === index}
+            tabIndex={selected === index ? 0 : -1}
+            className={`tabItem ${selected === index ? 'active' : ''}`}
+            onClick={() => select(index)}
+            onKeyDown={(event) => onKeyDown(event, index)}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
 
-    return (
-        <div className='switchingTabs'>
-            <div className="tabItems">
-                {data.map((tab, index) => (
-                    <span
-                        key={index}
-                        ref={el => tabRefs.current[index] = el}
-                        className={`tabItem ${selectedTab === index ? "active" : ""}`}
-                        onClick={() => activeTab(tab, index)}
-                    >
-                        {tab}
-                    </span>
-                ))}
-                <span className="movingBg" style={{ left: bgStyle.left, width: bgStyle.width }} />
-            </div>
-        </div>
-    );
-};
-
-export default SwitchTab;
-
+export default SwitchTab

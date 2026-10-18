@@ -1,0 +1,31 @@
+.pageHead {
+  padding-block: var(--sp-5) var(--sp-4);
+
+  &__eyebrow {
+    margin-bottom: 6px;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    width: fit-content;
+  }
+
+  .pageIntro {
+    margin-top: 8px;
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    margin-top: var(--sp-4);
+  }
+}
+
+.pageBody {
+  padding-bottom: var(--sp-6);
+}

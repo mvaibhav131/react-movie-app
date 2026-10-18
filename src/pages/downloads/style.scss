@@ -1,0 +1,78 @@
+@use '../../mixins' as *;
+
+.downloads {
+  &__summary {
+    margin-bottom: var(--sp-4);
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+  }
+
+  &__list {
+    display: grid;
+    gap: var(--sp-3);
+    margin-bottom: var(--sp-5);
+
+    @include lg {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: var(--sp-3);
+    padding: var(--sp-3);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+  }
+
+  &__poster {
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    align-self: start;
+  }
+
+  &__body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    h2 {
+      font-size: var(--fs-md);
+      @include ellipsis(2);
+    }
+
+    p {
+      font-size: var(--fs-xs);
+      color: var(--text-secondary);
+    }
+  }
+
+  &__bar {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--bg-input);
+    overflow: hidden;
+
+    i {
+      display: block;
+      height: 100%;
+      background: var(--gradient);
+      transition: width 250ms linear;
+    }
+  }
+
+  &__error {
+    color: var(--red) !important;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 6px;
+  }
+}

@@ -1,0 +1,178 @@
+@use '../../mixins' as *;
+
+.matchCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: var(--sp-4);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+
+  &--live {
+    border-color: rgba(239, 68, 68, 0.55);
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.25), var(--shadow-card);
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    .badge {
+      flex-shrink: 0;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: var(--fs-2xs);
+    }
+  }
+
+  &__league {
+    min-width: 0;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--text-secondary);
+    @include truncate;
+  }
+
+  &__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ff4d4d;
+    animation: livePulse 1.4s ease-in-out infinite;
+  }
+
+  &__teams {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+  }
+
+  &__logo {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: contain;
+    background: var(--bg-input);
+
+    &--fallback {
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+  }
+
+  &__name {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--fs-md);
+    font-weight: 600;
+    @include truncate;
+  }
+
+  &__score {
+    flex-shrink: 0;
+    font-size: var(--fs-md);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+
+    svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+      font-size: 14px;
+    }
+  }
+
+  &__result {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    @include ellipsis(2);
+  }
+
+  &__foot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 4px;
+
+    .btn {
+      max-width: 100%;
+      white-space: normal;
+      text-align: left;
+      line-height: 1.25;
+      padding-block: 8px;
+    }
+  }
+
+  &__more {
+    font-size: var(--fs-xs);
+
+    summary {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      margin-top: 4px;
+    }
+
+    a {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      min-height: 36px;
+      color: var(--accent);
+      font-weight: 600;
+
+      small {
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+    }
+  }
+
+  &--compact {
+    padding: var(--sp-3);
+    gap: 8px;
+  }
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
+}

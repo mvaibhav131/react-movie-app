@@ -1,0 +1,43 @@
+@use '../../mixins' as *;
+
+.myListBtn {
+  &--card {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(8, 11, 19, 0.72);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 18px;
+    transition: background-color var(--dur-1) ease, transform var(--dur-1) ease, opacity var(--dur-1) ease;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+
+    &.isActive {
+      background: var(--accent);
+      border-color: transparent;
+    }
+
+    /* Hover devices reveal it on demand; touch devices use the details page to keep posters clean. */
+    @include hover-device {
+      opacity: 0;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+    @include touch-device {
+      display: none;
+    }
+  }
+
+  &.isActive:not(.myListBtn--card) {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+}

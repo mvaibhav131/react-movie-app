@@ -1,37 +1,110 @@
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-xxl: 1600px;
+
 @mixin sm {
-    @media only screen and (min-width: 640px) {
-        @content;
-    }
+  @media (min-width: $bp-sm) {
+    @content;
+  }
 }
 
 @mixin md {
-    @media only screen and (min-width: 768px) {
-        @content;
-    }
+  @media (min-width: $bp-md) {
+    @content;
+  }
 }
 
 @mixin lg {
-    @media only screen and (min-width: 1024px) {
-        @content;
-    }
+  @media (min-width: $bp-lg) {
+    @content;
+  }
 }
 
 @mixin xl {
-    @media only screen and (min-width: 1280px) {
-        @content;
-    }
+  @media (min-width: $bp-xl) {
+    @content;
+  }
 }
 
 @mixin xxl {
-    @media only screen and (min-width: 1536px) {
-        @content;
-    }
+  @media (min-width: $bp-xxl) {
+    @content;
+  }
 }
 
-@mixin ellipsis($line: 2) {
-    display: -webkit-box;
-    -webkit-line-clamp: $line;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+/* Below the desktop navigation breakpoint. */
+@mixin below-lg {
+  @media (max-width: #{$bp-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin hover-device {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin touch-device {
+  @media (hover: none), (pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin landscape-short {
+  @media (orientation: landscape) and (max-height: 500px) {
+    @content;
+  }
+}
+
+@mixin ellipsis($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@mixin glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: saturate(160%) blur(18px);
+  backdrop-filter: saturate(160%) blur(18px);
+}
+
+/* Horizontal scroller that snaps and bleeds to the viewport edges inside a padded wrapper. */
+@mixin h-scroll {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  @include hide-scrollbar;
 }

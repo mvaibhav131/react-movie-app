@@ -1,20 +1,23 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
-import "./style.scss";
+import { useSelector } from 'react-redux'
+import { selectGenres } from '../../store/selectors'
+import './style.scss'
 
-const Genres = ({ data }) => {
-    const { genres } = useSelector((state) => state.home);
+/** Genre labels for a list of TMDB genre ids (ids unknown to the loaded genre map are skipped). */
+const Genres = ({ data, limit, variant = 'chips' }) => {
+  const genres = useSelector(selectGenres)
+  const names = (data || [])
+    .map((id) => genres[id]?.name)
+    .filter(Boolean)
+    .slice(0, limit)
+  if (!names.length) return null
   return (
-      <div className="genres">
-          {data?.map((i) => {
-              if (!genres[i]?.name) return;
-              return (
-                  <div key={i} className="genre">
-                      {genres[i]?.name}
-                  </div>
-              )
-          })}
-    </div>
+    <ul className={`genres genres--${variant}`} aria-label="Genres">
+      {names.map((name) => (
+        <li key={name} className="genre">
+          {name}
+        </li>
+      ))}
+    </ul>
   )
 }
 

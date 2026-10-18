@@ -1,0 +1,28 @@
+.errorBoundary {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 20px;
+  text-align: center;
+
+  > svg {
+    font-size: 56px;
+    color: var(--red);
+  }
+
+  p {
+    max-width: 44ch;
+    color: var(--text-secondary);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 8px;
+  }
+}

@@ -1,44 +1,41 @@
+@use '../../mixins' as *;
+
 .switchingTabs {
-    height: auto;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 3px;
-    flex-shrink: 0;
+  max-width: 100%;
+  min-width: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 3px;
 
-    .tabItems {
-        display: flex;
-        align-items: center;
-        position: relative;
+  .tabItems {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    overflow-x: auto;
+    @include hide-scrollbar;
+  }
 
-        .tabItem {
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 14px;
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            position: relative;
-            z-index: 1;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: color 0.3s;
+  .tabItem {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    transition: color var(--dur-1) ease, background-color var(--dur-1) ease;
 
-            &.active { color: #fff; }
-        }
-
-        .movingBg {
-            height: 28px;
-            border-radius: 15px;
-            background: var(--gradient);
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: left 0.35s cubic-bezier(0.68, -0.3, 0.32, 1.3),
-                        width 0.35s cubic-bezier(0.68, -0.3, 0.32, 1.3);
-        }
+    @include hover-device {
+      &:hover:not(.active) {
+        color: var(--text-primary);
+      }
     }
+
+    &.active {
+      background: var(--gradient);
+      color: var(--on-accent);
+    }
+  }
 }

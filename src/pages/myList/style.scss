@@ -1,0 +1,73 @@
+@use '../../mixins' as *;
+
+.myList {
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-3);
+    justify-content: space-between;
+
+    .chipRow {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+
+  &__sort select {
+    min-height: 44px;
+    padding: 0 38px 0 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-input);
+    background-color: var(--bg-card);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a93a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  &__section {
+    margin-bottom: var(--sp-6);
+  }
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--sp-3);
+    font-size: var(--fs-lg);
+
+    span {
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+    }
+  }
+
+  &__item {
+    position: relative;
+  }
+
+  &__remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    color: #fff;
+    background: rgba(8, 11, 19, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+  }
+}

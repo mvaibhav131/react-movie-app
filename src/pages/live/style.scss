@@ -1,0 +1,158 @@
+@use '../../mixins' as *;
+
+.livePage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding-bottom: var(--sp-6);
+
+  > .cricketVideos {
+    margin-top: 0;
+  }
+
+  &__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+
+    .chipRow {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+
+  &__count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 11px;
+    background: rgba(128, 128, 160, 0.22);
+    font-size: var(--fs-2xs);
+    font-weight: 700;
+  }
+
+  .chip[aria-selected='true'] &__count {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+
+    .isSpinning {
+      animation: spin 0.9s linear infinite;
+    }
+  }
+
+  &__notice {
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    background: rgba(255, 138, 0, 0.12);
+    border: 1px solid rgba(255, 138, 0, 0.35);
+    font-size: var(--fs-sm);
+  }
+
+  &__grid {
+    display: grid;
+    gap: var(--sp-3);
+    grid-template-columns: 1fr;
+
+    @include md {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @include xl {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  &__skeleton {
+    min-height: 190px;
+    border-radius: var(--radius-lg);
+  }
+
+  &__where {
+    margin-top: var(--sp-5);
+    padding: var(--sp-4);
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+
+    @include md {
+      padding: var(--sp-5);
+    }
+
+    summary {
+      cursor: pointer;
+      font-size: var(--fs-md);
+      font-weight: 700;
+    }
+
+    &[open] summary {
+      margin-bottom: 6px;
+    }
+
+    h3 {
+      margin-top: var(--sp-4);
+      font-size: var(--fs-md);
+    }
+
+    > p {
+      margin: 6px 0 var(--sp-3);
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+      max-width: 70ch;
+    }
+  }
+
+  &__platforms {
+    display: grid;
+    gap: 8px;
+    margin-top: var(--sp-2);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 56px;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+
+      strong {
+        font-size: var(--fs-sm);
+      }
+      small {
+        flex: 1;
+        min-width: 0;
+        font-size: var(--fs-xs);
+        color: var(--text-muted);
+        @include truncate;
+      }
+      svg {
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
+
+      @include hover-device {
+        &:hover {
+          border-color: var(--accent);
+        }
+      }
+    }
+  }
+
+  &__dev {
+    margin-top: var(--sp-3);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+  }
+}

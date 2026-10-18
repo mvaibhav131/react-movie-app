@@ -1,0 +1,130 @@
+@use '../../mixins' as *;
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(3, 5, 10, 0.82);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    animation: fadeIn var(--dur-2) ease;
+  }
+
+  &__panel {
+    position: relative;
+    max-height: calc(100dvh - 24px);
+    overflow: auto;
+    overscroll-behavior: contain;
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-pop);
+    animation: riseIn var(--dur-3) var(--ease);
+
+    &--md {
+      width: min(560px, calc(100vw - 24px));
+      padding: var(--sp-5);
+    }
+
+    &--video {
+      /* 44px header bar + a 16:9 stage that still fits the viewport height. */
+      width: min(1100px, calc(100vw - 24px), calc((100dvh - 24px - 44px) * 16 / 9));
+      padding: 0;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    /* Video on top, scrollable details below. */
+    &--player {
+      width: min(960px, calc(100vw - 24px));
+      padding: 0;
+      border-radius: var(--radius);
+    }
+
+    &--sheet {
+      width: min(560px, 100vw);
+      padding: var(--sp-5);
+      @include below-lg {
+        align-self: end;
+        width: 100vw;
+        max-height: 86dvh;
+        border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        padding-bottom: calc(var(--sp-5) + var(--safe-bottom));
+        animation: sheetIn var(--dur-3) var(--ease);
+      }
+    }
+  }
+
+  &__bar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    min-height: 44px;
+    padding: 0 4px 0 var(--sp-4);
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  &__barTitle {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  &__close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 24px;
+    color: #fff;
+    background: rgba(8, 11, 19, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    &--bar {
+      position: static;
+      flex: none;
+      width: 40px;
+      height: 40px;
+      color: var(--text-primary);
+      background: transparent;
+      border-color: transparent;
+    }
+  }
+
+  &__panel--sheet &__close,
+  &__panel--md &__close {
+    color: var(--text-primary);
+    background: var(--bg-input);
+    border-color: var(--border-color);
+  }
+}
+
+@keyframes sheetIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}

@@ -1,23 +1,84 @@
+@use '../../mixins' as *;
+
 .homePage {
-    padding-top: 64px;
+  padding-bottom: var(--sp-5);
 }
 
-.carouselSection {
-    position: relative;
-    margin-bottom: 24px;
+.quickLinks {
+  margin-top: var(--sp-4);
 
-    & > .contentWrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
+  /* Desktop already has the full navigation in the header. */
+  @include lg {
+    display: none;
+  }
+}
+
+.liveStrip__cta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+
+  > svg {
+    flex-shrink: 0;
+    font-size: 32px;
+    color: var(--accent);
+  }
+
+  span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  strong {
+    font-size: var(--fs-md);
+  }
+
+  small {
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+  }
+
+  @include hover-device {
+    &:hover {
+      border-color: var(--accent);
     }
+  }
+}
 
-    .carouselTitle {
-        font-size: 20px;
-        font-weight: 700;
-        color: var(--text-primary);
+.continueCard {
+  position: relative;
 
-        @media (min-width: 768px) { font-size: 24px; }
+  &__remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    color: #fff;
+    background: rgba(8, 11, 19, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    @include hover-device {
+      opacity: 0;
+      transition: opacity var(--dur-1) ease;
     }
+  }
+
+  @include hover-device {
+    &:hover .continueCard__remove,
+    &:focus-within .continueCard__remove {
+      opacity: 1;
+    }
+  }
 }

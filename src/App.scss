@@ -1,17 +1,66 @@
+@use './mixins' as *;
+
 #root {
-    width: 100%;
-    min-height: 100vh;
-    background-color: var(--bg-primary);
-    transition: background-color 0.3s ease;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+}
+
+.appMain {
+  flex: 1 0 auto;
+  width: 100%;
+  min-width: 0;
+  padding-top: calc(var(--header-h) + var(--safe-top));
+  padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 8px);
+  outline: none;
+
+  @include lg {
+    padding-bottom: 0;
+  }
+
+  &--flush {
+    padding-top: 0;
+  }
 }
 
 .contentWrapper {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
 
-    @media (min-width: 768px) {
-        padding: 0 40px;
-    }
+.skipLink {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: calc(var(--z-toast) + 1);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform var(--dur-1) ease;
+
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+.routeFallback {
+  min-height: 50vh;
+  display: grid;
+  place-items: center;
+}
+
+.toaster {
+  z-index: var(--z-toast) !important;
+
+  @include below-lg {
+    bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 12px) !important;
+  }
 }
